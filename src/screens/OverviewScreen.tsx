@@ -65,6 +65,11 @@ const OverviewScreen: React.FC = () => {
     total: i18n.t('total'),
     cigarettes: i18n.t('cigarettes'),
     daily: i18n.t('daily'),
+    wasted_money: i18n.t('wasted_money'),
+    wasted_time: i18n.t('wasted_time'),
+    dollars: i18n.t('dollars'),
+    hours: i18n.t('hours'),
+    days: i18n.t('days'),
   }), [language]);
 
   useEffect(() => {
@@ -92,6 +97,21 @@ const OverviewScreen: React.FC = () => {
     data.slice(Math.max(0, data.length - 7)) : 
     data;
   const average = getAverageCigarettes(displayData);
+  
+  // Calculate total cigarettes
+  const totalCigarettes = displayData.reduce(
+    (sum, day) => sum + day.morning + day.afternoon + day.evening,
+    0
+  );
+  
+  // Calculate wasted money: $1 per cigarette (1 pack = 20 cigs = $20)
+  const wastedMoney = totalCigarettes * 1;
+  
+  // Calculate wasted time: 20 minutes per cigarette
+  const wastedMinutes = totalCigarettes * 20;
+  const wastedHours = wastedMinutes / 60;
+  const wastedDays = Math.floor(wastedHours / 24);
+  const wastedHoursRemainder = Math.floor(wastedHours % 24);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -204,12 +224,25 @@ const OverviewScreen: React.FC = () => {
 
           <StatCard
             label={translations.total}
-            value={displayData.reduce(
-              (sum, day) => sum + day.morning + day.afternoon + day.evening,
-              0
-            )}
+            value={totalCigarettes}
             unit={translations.cigarettes}
             color="#8b5cf6"
+          />
+
+          <StatCard
+            label={translations.wasted_money}
+            value={wastedMoney}
+            unit={translations.dollars}
+            color="#ef4444"
+          />
+
+          <StatCard
+            label={translations.wasted_time}
+            value={wastedDays}
+            unit={translations.days}
+            color="#f97316"
+            subValue={wastedHoursRemainder}
+            subUnit={translations.hours}
           />
         </View>
 
@@ -269,13 +302,23 @@ interface StatCardProps {
   value: number;
   unit: string;
   color: string;
+  subValue?: number;
+  subUnit?: string;
 }
 
-const StatCard: React.FC<StatCardProps> = ({ label, value, unit, color }) => (
+const StatCard: React.FC<StatCardProps> = ({ label, value, unit, color, subValue, subUnit }) => (
   <View style={[styles.statCard, { borderTopColor: color }]}>
     <Text style={styles.statLabel}>{label}</Text>
-    <Text style={[styles.statValue, { color }]}>{value}</Text>
-    <Text style={styles.statUnit}>{unit}</Text>
+    <View style={styles.statValueContainer}>
+      <Text style={[styles.statValue, { color }]}>{value}</Text>
+      <Text style={styles.statUnit}>{unit}</Text>
+    </View>
+    {subValue !== undefined && subUnit && (
+      <View style={styles.statSubContainer}>
+        <Text style={[styles.statSubValue, { color }]}>{subValue}</Text>
+        <Text style={styles.statSubUnit}>{subUnit}</Text>
+      </View>
+    )}
   </View>
 );
 
@@ -362,14 +405,33 @@ const styles = StyleSheet.create({
     color: '#0891b2',
     marginBottom: 8,
   },
+  statValueContainer: {
+    flexDirection: 'row',
+    alignItems: 'baseline',
+    marginBottom: 4,
+    gap: 4,
+  },
   statValue: {
     fontSize: 32,
     fontWeight: 'bold',
     color: '#0891b2',
-    marginBottom: 4,
   },
   statUnit: {
     fontSize: 12,
+    color: '#06b6d4',
+  },
+  statSubContainer: {
+    flexDirection: 'row',
+    alignItems: 'baseline',
+    gap: 4,
+  },
+  statSubValue: {
+    fontSize: 16,
+    fontWeight: '600',
+    color: '#0891b2',
+  },
+  statSubUnit: {
+    fontSize: 10,
     color: '#06b6d4',
   },
   section: {

@@ -47,6 +47,11 @@ const fr = {
   yearly: 'Annuel',
   average: 'Moyenne',
   per_day: 'par jour',
+  wasted_money: 'Argent Gaspillé',
+  wasted_time: 'Vie Gaspillée',
+  dollars: 'dollars',
+  hours: 'heures',
+  days: 'jours',
   
   // Workout Screen
   activities: 'Activités',

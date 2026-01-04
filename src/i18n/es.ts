@@ -41,6 +41,11 @@ const es = {
   monthly: 'Mensual',
   average: 'Promedio',
   per_day: 'por día',
+  wasted_money: 'Dinero Desperdiciado',
+  wasted_time: 'Vida Desperdiciada',
+  dollars: 'dólares',
+  hours: 'horas',
+  days: 'días',
   
   // Workout Screen
   activities: 'Actividades',

@@ -47,6 +47,11 @@ const en = {
   yearly: 'Yearly',
   average: 'Average',
   per_day: 'per day',
+  wasted_money: 'Wasted Money',
+  wasted_time: 'Wasted Life',
+  dollars: 'dollars',
+  hours: 'hours',
+  days: 'days',
   
   // Workout Screen
   activities: 'Activities',
