@@ -1,35 +1,188 @@
 import { Tabs } from 'expo-router';
-import React from 'react';
-
-import { HapticTab } from '@/components/haptic-tab';
-import { IconSymbol } from '@/components/ui/icon-symbol';
-import { Colors } from '@/constants/theme';
-import { useColorScheme } from '@/hooks/use-color-scheme';
+import React, { useState } from 'react';
+import { View, TouchableOpacity, Text, StyleSheet, Share, Alert } from 'react-native';
+import { useLanguage } from '@/src/context/LanguageContext';
+import i18n from '@/src/i18n';
+import { useCigarette } from '@/src/context/CigaretteContext';
 
 export default function TabLayout() {
-  const colorScheme = useColorScheme();
+  const { language, changeLanguage } = useLanguage();
+  const [renderVersion, setRenderVersion] = useState(0);
+  const { totalToday } = useCigarette();
+
+  const handleLanguageChange = (lang: string) => {
+    changeLanguage(lang);
+    setRenderVersion(v => v + 1);
+  };
+
+  const shareApp = async () => {
+    try {
+      await Share.share({
+        message: 'Check out Make Lost Boys Healthy Again - A smoking cessation tracking app! Rejoignez-moi pour arrêter de fumer!',
+        title: 'Make Lost Boys Healthy Again',
+      });
+    } catch (error) {
+      Alert.alert('Error sharing app');
+    }
+  };
+
+  const sharePerformance = async () => {
+    try {
+      await Share.share({
+        message: `I've tracked ${totalToday} cigarettes today with Make Lost Boys Healthy Again! J'ai enregistré ${totalToday} cigarettes aujourd'hui!`,
+        title: 'My Daily Performance',
+      });
+    } catch (error) {
+      Alert.alert('Error sharing performance');
+    }
+  };
 
   return (
     <Tabs
+      key={`tabs-${renderVersion}`}
       screenOptions={{
-        tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
-        headerShown: false,
-        tabBarButton: HapticTab,
+        headerShown: true,
+        header: () => (
+          <View style={styles.header}>
+            <Text style={styles.headerTitle}>Make Lost Boys Healthy Again</Text>
+            <View style={styles.languageButtons}>
+              <TouchableOpacity
+                style={[
+                  styles.langButton,
+                  language === 'en' && styles.langButtonActive,
+                ]}
+                onPress={() => handleLanguageChange('en')}>
+                <Text
+                  style={[
+                    styles.langButtonText,
+                    language === 'en' && styles.langButtonTextActive,
+                  ]}>
+                  EN
+                </Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={[
+                  styles.langButton,
+                  language === 'fr' && styles.langButtonActive,
+                ]}
+                onPress={() => handleLanguageChange('fr')}>
+                <Text
+                  style={[
+                    styles.langButtonText,
+                    language === 'fr' && styles.langButtonTextActive,
+                  ]}>
+                  FR
+                </Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={[
+                  styles.langButton,
+                  language === 'es' && styles.langButtonActive,
+                ]}
+                onPress={() => handleLanguageChange('es')}>
+                <Text
+                  style={[
+                    styles.langButtonText,
+                    language === 'es' && styles.langButtonTextActive,
+                  ]}>
+                  ES
+                </Text>
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.shareButton} onPress={shareApp}>
+                <Text style={styles.shareButtonText}>📱</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={styles.shareButton}
+                onPress={sharePerformance}>
+                <Text style={styles.shareButtonText}>📊</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        ),
+        tabBarStyle: styles.tabBar,
+        tabBarActiveTintColor: '#0078D4',
+        tabBarInactiveTintColor: '#cbd5e1',
+        tabBarLabelStyle: styles.tabBarLabel,
       }}>
       <Tabs.Screen
+        key={`home-${language}`}
         name="index"
         options={{
-          title: 'Home',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="house.fill" color={color} />,
+          title: i18n.t('home'),
         }}
       />
       <Tabs.Screen
-        name="explore"
+        key={`overview-${language}`}
+        name="overview"
         options={{
-          title: 'Explore',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="paperplane.fill" color={color} />,
+          title: i18n.t('overview'),
         }}
       />
     </Tabs>
   );
 }
+
+const styles = StyleSheet.create({
+  header: {
+    backgroundColor: '#0078D4',
+    paddingHorizontal: 16,
+    paddingTop: 16,
+    paddingBottom: 12,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  headerTitle: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: '#ffffff',
+    flex: 1,
+  },
+  languageButtons: {
+    flexDirection: 'row',
+    gap: 8,
+  },
+  langButton: {
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    borderRadius: 6,
+    backgroundColor: '#ffffff',
+    borderWidth: 2,
+    borderColor: '#ffffff',
+  },
+  langButtonActive: {
+    backgroundColor: '#ffffff',
+    borderColor: '#ffffff',
+  },
+  langButtonText: {
+    fontSize: 12,
+    fontWeight: '600',
+    color: '#0078D4',
+  },
+  langButtonTextActive: {
+    color: '#0078D4',
+  },
+  shareButton: {
+    paddingHorizontal: 10,
+    paddingVertical: 6,
+    borderRadius: 6,
+    backgroundColor: '#ffffff',
+    borderWidth: 2,
+    borderColor: '#ffffff',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  shareButtonText: {
+    fontSize: 16,
+  },
+  tabBar: {
+    backgroundColor: '#ffffff',
+    borderTopColor: '#e2e8f0',
+    borderTopWidth: 1,
+  },
+  tabBarLabel: {
+    fontSize: 11,
+    fontWeight: '500',
+    marginTop: 4,
+  },
+});
