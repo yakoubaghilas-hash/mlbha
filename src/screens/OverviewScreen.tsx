@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import {
   View,
   Text,
@@ -53,6 +53,20 @@ const OverviewScreen: React.FC = () => {
   const [data, setData] = useState<DayData[]>([]);
   const [chartData, setChartData] = useState<any>(null);
 
+  // Create translations object that updates when language changes
+  const translations = useMemo(() => ({
+    overview: i18n.t('overview'),
+    weekly: i18n.t('weekly'),
+    monthly: i18n.t('monthly'),
+    yearly: i18n.t('yearly'),
+    loading: i18n.t('loading'),
+    average: i18n.t('average'),
+    per_day: i18n.t('per_day'),
+    total: i18n.t('total'),
+    cigarettes: i18n.t('cigarettes'),
+    daily: i18n.t('daily'),
+  }), [language]);
+
   useEffect(() => {
     const loadData = async () => {
       const allData = await getAllData();
@@ -80,10 +94,10 @@ const OverviewScreen: React.FC = () => {
   const average = getAverageCigarettes(displayData);
 
   return (
-    <SafeAreaView style={styles.container} key={language}>
+    <SafeAreaView style={styles.container}>
       <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
         <View style={styles.header}>
-          <Text style={styles.title}>{i18n.t('overview')}</Text>
+          <Text style={styles.title}>{translations.overview}</Text>
         </View>
 
         {/* View Type Selector */}
@@ -101,7 +115,7 @@ const OverviewScreen: React.FC = () => {
                 viewType === 'weekly' && styles.viewButtonTextActive,
               ]}
             >
-              {i18n.t('weekly')}
+              {translations.weekly}
             </Text>
           </TouchableOpacity>
 
@@ -118,7 +132,7 @@ const OverviewScreen: React.FC = () => {
                 viewType === 'monthly' && styles.viewButtonTextActive,
               ]}
             >
-              {i18n.t('monthly')}
+              {translations.monthly}
             </Text>
           </TouchableOpacity>
 
@@ -135,7 +149,7 @@ const OverviewScreen: React.FC = () => {
                 viewType === 'yearly' && styles.viewButtonTextActive,
               ]}
             >
-              {i18n.t('yearly')}
+              {translations.yearly}
             </Text>
           </TouchableOpacity>
         </View>
@@ -175,33 +189,33 @@ const OverviewScreen: React.FC = () => {
           </View>
         ) : (
           <View style={styles.chartPlaceholder}>
-            <Text style={styles.loadingText}>{i18n.t('loading')}</Text>
+            <Text style={styles.loadingText}>{translations.loading}</Text>
           </View>
         )}
 
         {/* Statistics Cards */}
         <View style={styles.statsContainer}>
           <StatCard
-            label={i18n.t('average')}
+            label={translations.average}
             value={Math.round(average)}
-            unit={i18n.t('per_day')}
+            unit={translations.per_day}
             color="#3b82f6"
           />
 
           <StatCard
-            label={i18n.t('total')}
+            label={translations.total}
             value={displayData.reduce(
               (sum, day) => sum + day.morning + day.afternoon + day.evening,
               0
             )}
-            unit={i18n.t('cigarettes')}
+            unit={translations.cigarettes}
             color="#8b5cf6"
           />
         </View>
 
         {/* Data Table */}
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>{i18n.t('daily')}</Text>
+          <Text style={styles.sectionTitle}>{translations.daily}</Text>
           <View style={styles.table}>
             {displayData.map((day) => (
               <View key={day.date}>

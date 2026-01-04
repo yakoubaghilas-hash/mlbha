@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import {
   View,
   Text,
@@ -18,6 +18,34 @@ const HomeScreen: React.FC = () => {
   const { language } = useLanguage();
   const [newTag, setNewTag] = useState('');
   const [showTagInput, setShowTagInput] = useState(false);
+
+  // Create translations object that updates when language changes
+  const translations = useMemo(() => ({
+    app_name: i18n.t('app_name'),
+    today: i18n.t('today'),
+    status: i18n.t('status'),
+    ready_perfection: i18n.t('ready_perfection'),
+    bad: i18n.t('bad'),
+    medium: i18n.t('medium'),
+    good: i18n.t('good'),
+    reason: i18n.t('reason'),
+    mood: i18n.t('mood'),
+    stress: i18n.t('stress'),
+    social: i18n.t('social'),
+    boredom: i18n.t('boredom'),
+    habits: i18n.t('habits'),
+    concentration: i18n.t('concentration'),
+    party: i18n.t('party'),
+    work_break: i18n.t('work_break'),
+    metro: i18n.t('metro'),
+    add_reason: i18n.t('add_reason'),
+    add_tag: i18n.t('add_tag'),
+    morning: i18n.t('morning'),
+    afternoon: i18n.t('afternoon'),
+    evening: i18n.t('evening'),
+    total: i18n.t('total'),
+    cigarettes: i18n.t('cigarettes'),
+  }), [language]);
 
   const total =
     todayData.morning + todayData.afternoon + todayData.evening;
@@ -56,11 +84,11 @@ const HomeScreen: React.FC = () => {
   };
 
   return (
-    <SafeAreaView style={styles.container} key={language}>
+    <SafeAreaView style={styles.container}>
       <ScrollView style={styles.scrollContent} showsVerticalScrollIndicator={false}>
         <View style={styles.header}>
-          <Text style={styles.title}>{i18n.t('app_name')}</Text>
-          <Text style={styles.subtitle}>{i18n.t('today')}</Text>
+          <Text style={styles.title}>{translations.app_name}</Text>
+          <Text style={styles.subtitle}>{translations.today}</Text>
         </View>
 
         {/* Level Badge */}
@@ -71,77 +99,77 @@ const HomeScreen: React.FC = () => {
           ]}
         >
           <Text style={styles.levelText} numberOfLines={1}>
-            {i18n.t('status')}: {i18n.t(level === 'Ready for Perfection' ? 'ready_perfection' : level.toLowerCase())}
+            {translations.status}: {translations[level === 'Ready for Perfection' ? 'ready_perfection' : level.toLowerCase()]}
           </Text>
         </View>
 
         {/* Reason Section */}
         <View style={styles.reasonSection}>
-        <Text style={styles.reasonLabel}>{i18n.t('reason')}</Text>
+        <Text style={styles.reasonLabel}>{translations.reason}</Text>
         
         {/* Suggested Reasons */}
         <View style={styles.suggestedReasonsContainer}>
           <TouchableOpacity
             style={styles.suggestedReason}
-            onPress={() => handleAddTag(i18n.t('mood'))}
+            onPress={() => handleAddTag(translations.mood)}
           >
-            <Text style={styles.suggestedReasonText}>😊 {i18n.t('mood')}</Text>
+            <Text style={styles.suggestedReasonText}>😊 {translations.mood}</Text>
           </TouchableOpacity>
 
           <TouchableOpacity
             style={styles.suggestedReason}
-            onPress={() => handleAddTag(i18n.t('stress'))}
+            onPress={() => handleAddTag(translations.stress)}
           >
-            <Text style={styles.suggestedReasonText}>😰 {i18n.t('stress')}</Text>
+            <Text style={styles.suggestedReasonText}>😰 {translations.stress}</Text>
           </TouchableOpacity>
 
           <TouchableOpacity
             style={styles.suggestedReason}
-            onPress={() => handleAddTag(i18n.t('social'))}
+            onPress={() => handleAddTag(translations.social)}
           >
-            <Text style={styles.suggestedReasonText}>👥 {i18n.t('social')}</Text>
+            <Text style={styles.suggestedReasonText}>👥 {translations.social}</Text>
           </TouchableOpacity>
 
           <TouchableOpacity
             style={styles.suggestedReason}
-            onPress={() => handleAddTag(i18n.t('boredom'))}
+            onPress={() => handleAddTag(translations.boredom)}
           >
-            <Text style={styles.suggestedReasonText}>😑 {i18n.t('boredom')}</Text>
+            <Text style={styles.suggestedReasonText}>😑 {translations.boredom}</Text>
           </TouchableOpacity>
 
           <TouchableOpacity
             style={styles.suggestedReason}
-            onPress={() => handleAddTag(i18n.t('habits'))}
+            onPress={() => handleAddTag(translations.habits)}
           >
-            <Text style={styles.suggestedReasonText}>👔 {i18n.t('habits')}</Text>
+            <Text style={styles.suggestedReasonText}>👔 {translations.habits}</Text>
           </TouchableOpacity>
 
           <TouchableOpacity
             style={styles.suggestedReason}
-            onPress={() => handleAddTag(i18n.t('concentration'))}
+            onPress={() => handleAddTag(translations.concentration)}
           >
-            <Text style={styles.suggestedReasonText}>🧠 {i18n.t('concentration')}</Text>
+            <Text style={styles.suggestedReasonText}>🧠 {translations.concentration}</Text>
           </TouchableOpacity>
 
           <TouchableOpacity
             style={styles.suggestedReason}
-            onPress={() => handleAddTag(i18n.t('party'))}
+            onPress={() => handleAddTag(translations.party)}
           >
-            <Text style={styles.suggestedReasonText}>🎉 {i18n.t('party')}</Text>
+            <Text style={styles.suggestedReasonText}>🎉 {translations.party}</Text>
           </TouchableOpacity>
 
           <TouchableOpacity
             style={styles.suggestedReason}
-            onPress={() => handleAddTag(i18n.t('work_break'))}
+            onPress={() => handleAddTag(translations.work_break)}
           >
-            <Text style={styles.suggestedReasonText}>☕ {i18n.t('work_break')}</Text>
+            <Text style={styles.suggestedReasonText}>☕ {translations.work_break}</Text>
           </TouchableOpacity>
 
           <TouchableOpacity
             style={styles.suggestedReason}
-            onPress={() => handleAddTag(i18n.t('metro'))}
+            onPress={() => handleAddTag(translations.metro)}
           >
-            <Text style={styles.suggestedReasonText}>🚇 {i18n.t('metro')}</Text>
+            <Text style={styles.suggestedReasonText}>🚇 {translations.metro}</Text>
           </TouchableOpacity>
         </View>
 
@@ -166,13 +194,13 @@ const HomeScreen: React.FC = () => {
             style={styles.addReasonButton}
             onPress={() => setShowTagInput(true)}
           >
-            <Text style={styles.addReasonButtonText}>+ {i18n.t('add_reason')}</Text>
+            <Text style={styles.addReasonButtonText}>+ {translations.add_reason}</Text>
           </TouchableOpacity>
         ) : (
           <View style={styles.tagInputContainer}>
             <TextInput
               style={styles.tagInput}
-              placeholder={i18n.t('add_tag')}
+              placeholder={translations.add_tag}
               placeholderTextColor="#94a3b8"
               value={newTag}
               onChangeText={setNewTag}
@@ -192,7 +220,7 @@ const HomeScreen: React.FC = () => {
         <View style={styles.periodsContainer}>
           {/* Morning */}
           <PeriodSection
-            title={i18n.t('morning')}
+            title={translations.morning}
             count={todayData.morning}
             onAdd={() => addCigarette('morning')}
             onRemove={() => removeCigarette('morning')}
@@ -201,7 +229,7 @@ const HomeScreen: React.FC = () => {
 
           {/* Afternoon */}
           <PeriodSection
-            title={i18n.t('afternoon')}
+            title={translations.afternoon}
             count={todayData.afternoon}
             onAdd={() => addCigarette('afternoon')}
             onRemove={() => removeCigarette('afternoon')}
@@ -210,7 +238,7 @@ const HomeScreen: React.FC = () => {
 
           {/* Evening */}
           <PeriodSection
-            title={i18n.t('evening')}
+            title={translations.evening}
             count={todayData.evening}
             onAdd={() => addCigarette('evening')}
             onRemove={() => removeCigarette('evening')}
@@ -220,9 +248,9 @@ const HomeScreen: React.FC = () => {
 
         {/* Total */}
         <View style={styles.totalContainer}>
-          <Text style={styles.totalLabel}>{i18n.t('total')}</Text>
+          <Text style={styles.totalLabel}>{translations.total}</Text>
           <Text style={styles.totalValue}>{total}</Text>
-          <Text style={styles.totalUnit}>{i18n.t('cigarettes')}</Text>
+          <Text style={styles.totalUnit}>{translations.cigarettes}</Text>
         </View>
         
         <View style={styles.spacer} />

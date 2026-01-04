@@ -7,17 +7,15 @@ const translations: Record<string, any> = {
   en, fr, es,
 };
 
-const locale = getLocales()[0]?.languageCode || 'en';
-
 // Simple i18n implementation
 const i18n = {
   translations,
   defaultLocale: 'en',
-  locale,
+  locale: getLocales()[0]?.languageCode || 'en',
   enableFallback: true,
-  t: (key: string): string => {
-    const currentLocale = translations[locale] || translations.en;
-    return currentLocale[key] || translations.en[key] || key;
+  t: function(key: string): string {
+    const currentLocale = this.translations[this.locale] || this.translations.en;
+    return currentLocale[key] || this.translations.en[key] || key;
   },
 };
 
