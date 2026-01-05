@@ -488,23 +488,6 @@ const HomeScreen: React.FC = () => {
             )}
           </View>
         </View>
-            <TextInput
-              style={styles.tagInput}
-              placeholder={translations.add_tag}
-              placeholderTextColor="#94a3b8"
-              value={newTag}
-              onChangeText={setNewTag}
-              onSubmitEditing={handleAddCustomTag}
-            />
-            <TouchableOpacity
-              style={styles.tagInputButton}
-              onPress={handleAddCustomTag}
-            >
-              <Text style={styles.tagInputButtonText}>✓</Text>
-            </TouchableOpacity>
-          </View>
-        )}
-      </View>
 
         {/* Period Sections */}
         <View style={styles.periodsContainer}>
