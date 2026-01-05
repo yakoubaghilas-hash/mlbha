@@ -157,10 +157,11 @@ const HomeScreen: React.FC = () => {
   };
 
   const handleAddStrategy = (strategy: string) => {
-    if (!profile.strategies.includes(strategy)) {
+    const strategies = profile.strategies || [];
+    if (!strategies.includes(strategy)) {
       const updatedProfile = {
         ...profile,
-        strategies: [...profile.strategies, strategy],
+        strategies: [...strategies, strategy],
       };
       updateProfile(updatedProfile);
     }
@@ -175,9 +176,10 @@ const HomeScreen: React.FC = () => {
   };
 
   const handleRemoveStrategy = (index: number) => {
+    const strategies = profile.strategies || [];
     const updatedProfile = {
       ...profile,
-      strategies: profile.strategies.filter((_, i) => i !== index),
+      strategies: strategies.filter((_, i) => i !== index),
     };
     updateProfile(updatedProfile);
   };
