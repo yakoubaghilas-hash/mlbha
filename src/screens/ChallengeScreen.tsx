@@ -314,16 +314,17 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   challengeTitle: {
-    fontSize: 14,
-    fontWeight: '600',
-    color: '#1e293b',
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: '#0078D4',
     marginBottom: 2,
   },
   challengeDescriptionPreview: {
     fontSize: 12,
-    color: '#64748b',
+    color: '#0078D4',
     marginTop: 4,
     lineHeight: 16,
+    fontWeight: '500',
   },
   subscribeButton: {
     width: 36,
@@ -339,12 +340,13 @@ const styles = StyleSheet.create({
   },
   challengeDescription: {
     fontSize: 13,
-    color: '#64748b',
+    color: '#0078D4',
     lineHeight: 18,
     marginTop: 8,
     paddingTop: 8,
     borderTopWidth: 1,
     borderTopColor: '#e2e8f0',
+    fontWeight: '500',
   },
   spacer: {
     height: 40,
