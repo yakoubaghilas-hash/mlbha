@@ -26,6 +26,7 @@ const ChallengeScreen: React.FC = () => {
 
   const translations = useMemo(() => ({
     challenges: i18n.t('challenges'),
+    challenges_subtitle: i18n.t('challenges_subtitle'),
     easy_level: i18n.t('easy_level'),
     medium_level: i18n.t('medium_level'),
     hard_level: i18n.t('hard_level'),
@@ -218,7 +219,7 @@ const ChallengeScreen: React.FC = () => {
       <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
         <View style={styles.header}>
           <Text style={styles.title}>{translations.challenges}</Text>
-          <Text style={styles.subtitle}>Relève les défis pour progresser</Text>
+          <Text style={styles.subtitle}>{translations.challenges_subtitle}</Text>
         </View>
 
         <LevelSection

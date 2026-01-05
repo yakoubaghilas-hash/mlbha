@@ -75,6 +75,7 @@ const fr = {
   
   // Challenge Screen
   challenges: 'Défis',
+  challenges_subtitle: 'Relève les défis pour progresser',
   easy_level: '✅ Niveau Facile',
   medium_level: '⚡ Niveau Moyen',
   hard_level: '🔥 Niveau Dur',

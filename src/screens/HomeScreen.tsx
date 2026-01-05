@@ -74,6 +74,16 @@ const HomeScreen: React.FC = () => {
     alert_days: i18n.t('alert_days'),
     active_challenges: i18n.t('active_challenges'),
     in_progress: i18n.t('in_progress'),
+    // Challenge titles for display
+    easy_reduction: i18n.t('easy_reduction'),
+    easy_no_smoke: i18n.t('easy_no_smoke'),
+    easy_hydration: i18n.t('easy_hydration'),
+    medium_reduction: i18n.t('medium_reduction'),
+    medium_pause: i18n.t('medium_pause'),
+    medium_substitution: i18n.t('medium_substitution'),
+    hard_day: i18n.t('hard_day'),
+    hard_multi_days: i18n.t('hard_multi_days'),
+    hard_radical: i18n.t('hard_radical'),
   }), [language]);
 
   const total =
@@ -172,10 +182,16 @@ const HomeScreen: React.FC = () => {
             <View style={styles.subscribedChallengesContainer}>
               {subscribedChallenges.map((challenge) => {
                 const statusColors = {
-                  active: '#0891b2',
+                  active: '#E0F4FF',
                   won: '#22c55e',
                   lost: '#ef4444',
                 };
+                const statusTextColors = {
+                  active: '#0078D4',
+                  won: '#ffffff',
+                  lost: '#ffffff',
+                };
+                const challengeTitle = translations[challenge.id as keyof typeof translations] || challenge.id;
                 const statusLabel = challenge.status === 'won' ? '✓' : challenge.status === 'lost' ? '✗' : `● ${translations.in_progress}`;
                 return (
                   <View
@@ -185,8 +201,11 @@ const HomeScreen: React.FC = () => {
                       { backgroundColor: statusColors[challenge.status] }
                     ]}
                   >
-                    <Text style={styles.subscribedChallengeText}>
-                      {statusLabel}
+                    <Text style={[
+                      styles.subscribedChallengeText,
+                      { color: statusTextColors[challenge.status] }
+                    ]}>
+                      {challengeTitle} • {statusLabel}
                     </Text>
                   </View>
                 );
