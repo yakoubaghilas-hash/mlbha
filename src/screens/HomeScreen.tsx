@@ -99,7 +99,7 @@ const HomeScreen: React.FC = () => {
           ]}
         >
           <Text style={styles.levelText} numberOfLines={1}>
-            {translations.status}: {translations[level === 'Ready for Perfection' ? 'ready_perfection' : level.toLowerCase()]}
+            {translations.status}: {translations[level === 'Ready for Perfection' ? 'ready_perfection' : level.toLowerCase() as keyof typeof translations]}
           </Text>
         </View>
 

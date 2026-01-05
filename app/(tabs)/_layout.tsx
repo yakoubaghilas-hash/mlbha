@@ -1,6 +1,6 @@
 import { Tabs } from 'expo-router';
 import React, { useState } from 'react';
-import { View, TouchableOpacity, Text, StyleSheet, Share, Alert } from 'react-native';
+import { View, TouchableOpacity, Text, StyleSheet, Share, Alert, Image } from 'react-native';
 import { useLanguage } from '@/src/context/LanguageContext';
 import i18n from '@/src/i18n';
 import { useCigarette } from '@/src/context/CigaretteContext';
@@ -44,7 +44,13 @@ export default function TabLayout() {
         headerShown: true,
         header: () => (
           <View style={styles.header}>
-            <Text style={styles.headerTitle}>Make Lost Boys Healthy Again</Text>
+            <View style={styles.titleContainer}>
+              <Image
+                source={require('../../logo.png')}
+                style={styles.logo}
+              />
+              <Text style={styles.headerTitle}>Make Lost Boys Healthy Again</Text>
+            </View>
             <View style={styles.languageButtons}>
               <TouchableOpacity
                 style={[
@@ -125,18 +131,28 @@ export default function TabLayout() {
 const styles = StyleSheet.create({
   header: {
     backgroundColor: '#0078D4',
-    paddingHorizontal: 16,
-    paddingTop: 16,
-    paddingBottom: 12,
+    paddingHorizontal: 12,
+    paddingTop: 12,
+    paddingBottom: 10,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
   },
+  titleContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    flex: 1,
+  },
+  logo: {
+    width: 32,
+    height: 32,
+    marginRight: 8,
+    borderRadius: 4,
+  },
   headerTitle: {
-    fontSize: 18,
+    fontSize: 16,
     fontWeight: 'bold',
     color: '#ffffff',
-    flex: 1,
   },
   languageButtons: {
     flexDirection: 'row',
