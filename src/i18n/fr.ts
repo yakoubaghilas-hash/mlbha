@@ -104,6 +104,13 @@ const fr = {
   laser: 'Thérapie au Laser',
   other_methods: 'Autres Techniques de Réduction',
   
+  // Challenge Screen
+  already_subscribed: 'Vous êtes déjà inscrit à un défi',
+  
+  // Home Screen - Challenges
+  active_challenges: 'Défis en cours',
+  in_progress: 'en cours',
+  
   // Messages
   no_data: 'Aucune donnée disponible',
   loading: 'Chargement...',

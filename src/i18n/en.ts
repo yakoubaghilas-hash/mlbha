@@ -103,8 +103,13 @@ const en = {
   nicotine_patch: 'Nicotine Patches',
   laser: 'Laser Therapy',
   other_methods: 'Other Reduction Techniques',
+    // Challenge Screen
+  already_subscribed: 'You are already subscribed to a challenge',
   
-  // Messages
+  // Home Screen - Challenges
+  active_challenges: 'Active Challenges',
+  in_progress: 'in progress',
+    // Messages
   no_data: 'No data available',
   loading: 'Loading...',
 };

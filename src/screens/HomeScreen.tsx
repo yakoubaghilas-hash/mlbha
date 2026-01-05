@@ -72,6 +72,8 @@ const HomeScreen: React.FC = () => {
     alert_minutes: i18n.t('alert_minutes'),
     alert_hours: i18n.t('alert_hours'),
     alert_days: i18n.t('alert_days'),
+    active_challenges: i18n.t('active_challenges'),
+    in_progress: i18n.t('in_progress'),
   }), [language]);
 
   const total =
@@ -166,7 +168,7 @@ const HomeScreen: React.FC = () => {
         {/* Subscribed Challenges Section */}
         {subscribedChallenges.length > 0 && (
           <View style={styles.challengesSection}>
-            <Text style={styles.challengesSectionLabel}>Défis en cours</Text>
+            <Text style={styles.challengesSectionLabel}>{translations.active_challenges}</Text>
             <View style={styles.subscribedChallengesContainer}>
               {subscribedChallenges.map((challenge) => {
                 const statusColors = {
@@ -174,6 +176,7 @@ const HomeScreen: React.FC = () => {
                   won: '#22c55e',
                   lost: '#ef4444',
                 };
+                const statusLabel = challenge.status === 'won' ? '✓' : challenge.status === 'lost' ? '✗' : `● ${translations.in_progress}`;
                 return (
                   <View
                     key={challenge.id}
@@ -183,7 +186,7 @@ const HomeScreen: React.FC = () => {
                     ]}
                   >
                     <Text style={styles.subscribedChallengeText}>
-                      {challenge.status === 'won' ? '✓' : challenge.status === 'lost' ? '✗' : '●'} {challenge.id.replace(/_/g, ' ')}
+                      {statusLabel}
                     </Text>
                   </View>
                 );

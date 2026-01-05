@@ -98,6 +98,13 @@ const es = {
   laser: 'Terapia con Láser',
   other_methods: 'Otras Técnicas de Reducción',
   
+  // Challenge Screen
+  already_subscribed: 'Ya estás inscrito en un desafío',
+  
+  // Home Screen - Challenges
+  active_challenges: 'Desafíos Activos',
+  in_progress: 'en progreso',
+  
   // Messages
   no_data: 'No hay datos disponibles',
   loading: 'Cargando...',

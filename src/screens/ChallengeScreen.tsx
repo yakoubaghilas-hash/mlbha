@@ -22,12 +22,14 @@ const ChallengeScreen: React.FC = () => {
   const { language } = useLanguage();
   const { subscribedChallenges, subscribeToChallenge, unsubscribeFromChallenge } = useCigarette();
   const [expandedChallenge, setExpandedChallenge] = useState<number | null>(null);
+  const [notificationMessage, setNotificationMessage] = useState<string | null>(null);
 
   const translations = useMemo(() => ({
     challenges: i18n.t('challenges'),
     easy_level: i18n.t('easy_level'),
     medium_level: i18n.t('medium_level'),
     hard_level: i18n.t('hard_level'),
+    already_subscribed: i18n.t('already_subscribed'),
     
     // Easy challenges
     easy_reduction: i18n.t('easy_reduction'),
@@ -133,8 +135,16 @@ const ChallengeScreen: React.FC = () => {
     const handleSubscribe = async () => {
       if (isSubscribed) {
         await unsubscribeFromChallenge(challenge.id);
+        setNotificationMessage(null);
       } else {
-        await subscribeToChallenge(challenge.id);
+        // Check if already has an active challenge
+        const activeChallenge = subscribedChallenges.find(c => c.status === 'active');
+        if (activeChallenge) {
+          setNotificationMessage(translations.already_subscribed);
+          setTimeout(() => setNotificationMessage(null), 3000);
+        } else {
+          await subscribeToChallenge(challenge.id);
+        }
       }
     };
 
@@ -198,6 +208,13 @@ const ChallengeScreen: React.FC = () => {
 
   return (
     <SafeAreaView style={styles.container}>
+      {/* Notification */}
+      {notificationMessage && (
+        <View style={styles.notificationBanner}>
+          <Text style={styles.notificationText}>{notificationMessage}</Text>
+        </View>
+      )}
+
       <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
         <View style={styles.header}>
           <Text style={styles.title}>{translations.challenges}</Text>
@@ -235,6 +252,20 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#f0f9fc',
+  },
+  notificationBanner: {
+    backgroundColor: '#fecaca',
+    borderBottomColor: '#dc2626',
+    borderBottomWidth: 2,
+    paddingHorizontal: 16,
+    paddingVertical: 12,
+    justifyContent: 'center',
+  },
+  notificationText: {
+    color: '#7f1d1d',
+    fontSize: 14,
+    fontWeight: '600',
+    textAlign: 'center',
   },
   content: {
     flex: 1,
