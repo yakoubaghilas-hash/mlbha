@@ -736,10 +736,15 @@ const styles = StyleSheet.create({
   },
   addReasonButton: {
     paddingVertical: 8,
+    paddingHorizontal: 12,
     alignItems: 'center',
+    borderRadius: 6,
+    backgroundColor: '#0078D4',
+    alignSelf: 'flex-start',
+    marginLeft: 0,
   },
   addReasonButtonText: {
-    color: '#0078D4',
+    color: '#ffffff',
     fontSize: 12,
     fontWeight: '600',
   },
