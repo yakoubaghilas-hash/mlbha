@@ -18,6 +18,7 @@ const HomeScreen: React.FC = () => {
   const { language } = useLanguage();
   const [newTag, setNewTag] = useState('');
   const [showTagInput, setShowTagInput] = useState(false);
+  const [alertMessage, setAlertMessage] = useState<string | null>(null);
 
   // Create translations object that updates when language changes
   const translations = useMemo(() => ({
@@ -45,6 +46,10 @@ const HomeScreen: React.FC = () => {
     evening: i18n.t('evening'),
     total: i18n.t('total'),
     cigarettes: i18n.t('cigarettes'),
+    alert_just_now: i18n.t('alert_just_now'),
+    alert_minutes: i18n.t('alert_minutes'),
+    alert_hours: i18n.t('alert_hours'),
+    alert_days: i18n.t('alert_days'),
   }), [language]);
 
   const total =
@@ -55,6 +60,27 @@ const HomeScreen: React.FC = () => {
     Medium: '#f97316',
     Good: '#84cc16',
     'Ready for Perfection': '#22c55e',
+  };
+
+  const buildAlertMessage = (timeInfo: { diffMins: number; diffHours: number; diffDays: number } | null): string | null => {
+    if (timeInfo === null) {
+      return `⚠️ ${translations.alert_just_now}`;
+    }
+
+    const { diffMins, diffHours, diffDays } = timeInfo;
+
+    if (diffMins < 1) {
+      return `⚠️ ${translations.alert_just_now}`;
+    } else if (diffMins < 60) {
+      const plural = diffMins > 1 ? 's' : '';
+      return `⚠️ ${translations.alert_minutes.replace('{count}', String(diffMins)).replace('{plural}', plural)}`;
+    } else if (diffHours < 24) {
+      const plural = diffHours > 1 ? 's' : '';
+      return `⚠️ ${translations.alert_hours.replace('{count}', String(diffHours)).replace('{plural}', plural)}`;
+    } else {
+      const plural = diffDays > 1 ? 's' : '';
+      return `⚠️ ${translations.alert_days.replace('{count}', String(diffDays)).replace('{plural}', plural)}`;
+    }
   };
 
   const handleAddTag = (tag: string) => {
@@ -83,8 +109,20 @@ const HomeScreen: React.FC = () => {
     updateProfile(updatedProfile);
   };
 
+  const showAlert = (message: string) => {
+    setAlertMessage(message);
+    setTimeout(() => setAlertMessage(null), 4000); // Disappear after 4 seconds
+  };
+
   return (
     <SafeAreaView style={styles.container}>
+      {/* Alert Message */}
+      {alertMessage && (
+        <View style={styles.alertBanner}>
+          <Text style={styles.alertText}>{alertMessage}</Text>
+        </View>
+      )}
+
       <ScrollView style={styles.scrollContent} showsVerticalScrollIndicator={false}>
         <View style={styles.header}>
           <Text style={styles.title}>{translations.app_name}</Text>
@@ -222,7 +260,13 @@ const HomeScreen: React.FC = () => {
           <PeriodSection
             title={translations.morning}
             count={todayData.morning}
-            onAdd={() => addCigarette('morning')}
+            onAdd={() => {
+              const timeInfo = addCigarette('morning');
+              const message = buildAlertMessage(timeInfo);
+              if (message) {
+                showAlert(message);
+              }
+            }}
             onRemove={() => removeCigarette('morning')}
             color="#3b82f6"
           />
@@ -231,7 +275,13 @@ const HomeScreen: React.FC = () => {
           <PeriodSection
             title={translations.afternoon}
             count={todayData.afternoon}
-            onAdd={() => addCigarette('afternoon')}
+            onAdd={() => {
+              const timeInfo = addCigarette('afternoon');
+              const message = buildAlertMessage(timeInfo);
+              if (message) {
+                showAlert(message);
+              }
+            }}
             onRemove={() => removeCigarette('afternoon')}
             color="#f59e0b"
           />
@@ -240,7 +290,13 @@ const HomeScreen: React.FC = () => {
           <PeriodSection
             title={translations.evening}
             count={todayData.evening}
-            onAdd={() => addCigarette('evening')}
+            onAdd={() => {
+              const timeInfo = addCigarette('evening');
+              const message = buildAlertMessage(timeInfo);
+              if (message) {
+                showAlert(message);
+              }
+            }}
             onRemove={() => removeCigarette('evening')}
             color="#8b5cf6"
           />
@@ -299,6 +355,20 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#f0f9fc',
   },
+  alertBanner: {
+    backgroundColor: '#fecaca',
+    borderBottomColor: '#dc2626',
+    borderBottomWidth: 2,
+    paddingHorizontal: 16,
+    paddingVertical: 12,
+    justifyContent: 'center',
+  },
+  alertText: {
+    color: '#7f1d1d',
+    fontSize: 14,
+    fontWeight: '600',
+    textAlign: 'center',
+  },
   scrollContent: {
     flex: 1,
   },
@@ -308,12 +378,12 @@ const styles = StyleSheet.create({
     paddingBottom: 8,
   },
   title: {
-    fontSize: 20,
+    fontSize: 14,
     fontWeight: 'bold',
     color: '#0078D4',
   },
   subtitle: {
-    fontSize: 14,
+    fontSize: 10,
     color: '#0090DA',
     marginTop: 2,
   },

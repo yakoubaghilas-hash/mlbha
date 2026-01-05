@@ -5,9 +5,10 @@ interface CigaretteContextType {
   // Current day data
   currentDate: string;
   todayData: DayData;
+  lastCigaretteTime: number | null; // Timestamp of last cigarette
   
   // Actions
-  addCigarette: (period: 'morning' | 'afternoon' | 'evening') => void;
+  addCigarette: (period: 'morning' | 'afternoon' | 'evening') => { diffMins: number; diffHours: number; diffDays: number } | null;
   removeCigarette: (period: 'morning' | 'afternoon' | 'evening') => void;
   setTodayData: (data: DayData) => void;
   
@@ -35,6 +36,7 @@ export const CigaretteProvider: React.FC<{ children: React.ReactNode }> = ({ chi
     tags: [],
     workoutDates: [],
   });
+  const [lastCigaretteTime, setLastCigaretteTime] = useState<number | null>(null);
 
   // Load today's data on mount
   useEffect(() => {
@@ -57,11 +59,26 @@ export const CigaretteProvider: React.FC<{ children: React.ReactNode }> = ({ chi
     saveDayData(dataToSave);
   }, [todayData, profile.tags]);
 
-  const addCigarette = (period: 'morning' | 'afternoon' | 'evening') => {
+  const addCigarette = (period: 'morning' | 'afternoon' | 'evening'): { diffMins: number; diffHours: number; diffDays: number } | null => {
+    const now = Date.now();
+    
+    // Get time difference from last cigarette
+    let timeInfo = null;
+    if (lastCigaretteTime !== null) {
+      const diffMs = now - lastCigaretteTime;
+      const diffMins = Math.floor(diffMs / 60000);
+      const diffHours = Math.floor(diffMs / 3600000);
+      const diffDays = Math.floor(diffMs / 86400000);
+      timeInfo = { diffMins, diffHours, diffDays };
+    }
+    
     setTodayDataState(prev => ({
       ...prev,
       [period]: prev[period] + 1,
     }));
+    setLastCigaretteTime(now);
+    
+    return timeInfo;
   };
 
   const removeCigarette = (period: 'morning' | 'afternoon' | 'evening') => {
@@ -91,6 +108,7 @@ export const CigaretteProvider: React.FC<{ children: React.ReactNode }> = ({ chi
   const value: CigaretteContextType = {
     currentDate,
     todayData,
+    lastCigaretteTime,
     addCigarette,
     removeCigarette,
     setTodayData,

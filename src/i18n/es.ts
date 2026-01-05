@@ -57,6 +57,12 @@ const es = {
   improvement: 'Mejora',
   better_with_workout: 'Mejor los días con entrenamiento',
   
+  // Alerts
+  alert_just_now: 'Acabas de fumar un cigarrillo',
+  alert_minutes: 'Último cigarrillo hace {count} minuto{plural}',
+  alert_hours: 'Último cigarrillo hace {count} hora{plural}',
+  alert_days: 'Último cigarrillo hace {count} día{plural}',
+  
   // Tips Screen
   quit_methods: 'Métodos para Dejar de Fumar',
   e_cigarette: 'Cigarrillo Electrónico / Boquilla de Plástico',

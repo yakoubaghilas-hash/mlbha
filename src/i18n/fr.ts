@@ -63,6 +63,12 @@ const fr = {
   improvement: 'Amélioration',
   better_with_workout: 'Meilleur les jours avec entraînement',
   
+  // Alerts
+  alert_just_now: 'Vous venez de fumer une cigarette',
+  alert_minutes: 'Dernière cigarette il y a {count} minute{plural}',
+  alert_hours: 'Dernière cigarette il y a {count} heure{plural}',
+  alert_days: 'Dernière cigarette il y a {count} jour{plural}',
+  
   // Tips Screen
   quit_methods: 'Méthodes pour Arrêter',
   e_cigarette: 'Cigarette Électronique / Embout Plastique',
