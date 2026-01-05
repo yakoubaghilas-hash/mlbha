@@ -60,13 +60,14 @@ export const CigaretteProvider: React.FC<{ children: React.ReactNode }> = ({ chi
 
   // Save whenever data changes
   useEffect(() => {
-    // Include current profile tags in the day data
+    // Include current profile tags and strategies in the day data
     const dataToSave = {
       ...todayData,
       tags: profile.tags,
+      strategies: profile.strategies,
     };
     saveDayData(dataToSave);
-  }, [todayData, profile.tags]);
+  }, [todayData, profile.tags, profile.strategies]);
 
   const addCigarette = (period: 'morning' | 'afternoon' | 'evening'): { diffMins: number; diffHours: number; diffDays: number } | null => {
     const now = Date.now();

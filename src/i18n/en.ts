@@ -87,6 +87,10 @@ const en = {
   top_reasons: 'Top Reasons',
   no_reasons_tracked: 'No reasons tracked',
   
+  // Overview - Top strategies
+  top_strategies: 'Top Strategies Used',
+  no_strategies_tracked: 'No strategies tracked',
+  
   // Challenge Screen
   challenges: 'Challenges',
   challenges_subtitle: 'Rise to the challenges to progress',

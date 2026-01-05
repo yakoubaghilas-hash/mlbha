@@ -81,6 +81,40 @@ const getTagFrequencyData = (data: DayData[]) => {
   };
 };
 
+// Function to get strategy frequency data
+const getStrategyFrequencyData = (data: DayData[]) => {
+  const strategyCounts: { [key: string]: number } = {};
+  
+  data.forEach((day) => {
+    if (day.strategies) {
+      day.strategies.forEach((strategy) => {
+        strategyCounts[strategy] = (strategyCounts[strategy] || 0) + 1;
+      });
+    }
+  });
+
+  // Sort by frequency and get top 6
+  const sortedStrategies = Object.entries(strategyCounts)
+    .sort(([, a], [, b]) => b - a)
+    .slice(0, 6);
+
+  if (sortedStrategies.length === 0) {
+    return null;
+  }
+
+  const colors = ['#10b981', '#06b6d4', '#8b5cf6', '#f97316', '#ef4444', '#3b82f6'];
+
+  return {
+    labels: sortedStrategies.map(([strategy]) => strategy),
+    datasets: [
+      {
+        data: sortedStrategies.map(([, count]) => count),
+      },
+    ],
+    colors: colors.slice(0, sortedStrategies.length),
+  };
+};
+
 const OverviewScreen: React.FC = () => {
   const { language } = useLanguage();
   const [viewType, setViewType] = useState<ViewType>('weekly');
@@ -106,6 +140,8 @@ const OverviewScreen: React.FC = () => {
     days: i18n.t('days'),
     top_reasons: i18n.t('top_reasons'),
     no_reasons_tracked: i18n.t('no_reasons_tracked'),
+    top_strategies: i18n.t('top_strategies'),
+    no_strategies_tracked: i18n.t('no_strategies_tracked'),
   }), [language]);
 
   useEffect(() => {
@@ -131,6 +167,9 @@ const OverviewScreen: React.FC = () => {
 
   // Get tag frequency data for pie chart
   const tagFrequencyData = useMemo(() => getTagFrequencyData(data), [data]);
+
+  // Get strategy frequency data for pie chart
+  const strategyFrequencyData = useMemo(() => getStrategyFrequencyData(data), [data]);
 
   const displayData = viewType === 'weekly' ? 
     data.slice(Math.max(0, data.length - 7)) : 
@@ -316,6 +355,42 @@ const OverviewScreen: React.FC = () => {
             <View style={styles.emptyState}>
               <Text style={styles.emptyStateText}>
                 {translations.no_reasons_tracked}
+              </Text>
+            </View>
+          </View>
+        )}
+
+        {/* Top Strategies Pie Chart */}
+        {strategyFrequencyData ? (
+          <View style={styles.section}>
+            <Text style={styles.sectionTitle}>{translations.top_strategies}</Text>
+            <View style={styles.pieChartContainer}>
+              <PieChart
+                data={strategyFrequencyData.labels.map((label, index) => ({
+                  name: label,
+                  count: strategyFrequencyData.datasets[0].data[index],
+                  color: strategyFrequencyData.colors[index],
+                  legendFontColor: '#333',
+                  legendFontSize: 12,
+                }))}
+                width={screenWidth - 40}
+                height={220}
+                chartConfig={{
+                  color: () => '#000',
+                  labelColor: () => '#000',
+                }}
+                accessor="count"
+                backgroundColor="transparent"
+                paddingLeft="15"
+              />
+            </View>
+          </View>
+        ) : (
+          <View style={styles.section}>
+            <Text style={styles.sectionTitle}>{translations.top_strategies}</Text>
+            <View style={styles.emptyState}>
+              <Text style={styles.emptyStateText}>
+                {translations.no_strategies_tracked}
               </Text>
             </View>
           </View>

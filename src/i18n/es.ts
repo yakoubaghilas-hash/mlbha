@@ -86,6 +86,10 @@ const es = {
   top_reasons: 'Razones Principales',
   no_reasons_tracked: 'Sin razones registradas',
   
+  // Overview - Top strategies
+  top_strategies: 'Estrategias Principales Utilizadas',
+  no_strategies_tracked: 'Sin estrategias registradas',
+  
   // Challenge Screen
   challenges: 'Desafíos',
   challenges_subtitle: 'Acepta los desafíos para progresar',

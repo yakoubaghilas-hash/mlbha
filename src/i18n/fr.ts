@@ -87,6 +87,10 @@ const fr = {
   top_reasons: 'Principales Raisons',
   no_reasons_tracked: 'Aucune raison enregistrée',
   
+  // Overview - Top strategies
+  top_strategies: 'Principales Stratégies Utilisées',
+  no_strategies_tracked: 'Aucune stratégie enregistrée',
+  
   // Challenge Screen
   challenges: 'Défis',
   challenges_subtitle: 'Relève les défis pour progresser',

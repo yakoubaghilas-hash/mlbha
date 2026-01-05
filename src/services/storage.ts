@@ -6,6 +6,7 @@ export interface DayData {
   afternoon: number;
   evening: number;
   tags?: string[];
+  strategies?: string[];
 }
 
 export interface UserProfile {
