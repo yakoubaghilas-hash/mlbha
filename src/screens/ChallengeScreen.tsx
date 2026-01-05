@@ -157,6 +157,7 @@ const ChallengeScreen: React.FC = () => {
             onPress={() => setExpandedChallenge(isExpanded ? null : index)}
           >
             <Text style={styles.challengeTitle}>{challenge.title}</Text>
+            <Text style={styles.challengeDescriptionPreview}>{challenge.description}</Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={[
@@ -184,15 +185,13 @@ const ChallengeScreen: React.FC = () => {
     );
   };
 
-  const LevelSection: React.FC<{ title: string; icon: string; challenges: Challenge[]; startIndex: number }> = ({
+  const LevelSection: React.FC<{ title: string; challenges: Challenge[]; startIndex: number }> = ({
     title,
-    icon,
     challenges: levelChallenges,
     startIndex,
   }) => (
     <View style={styles.section}>
       <View style={styles.sectionHeader}>
-        <Text style={styles.sectionIcon}>{icon}</Text>
         <Text style={styles.sectionTitle}>{title}</Text>
       </View>
       <View style={styles.challengesContainer}>
@@ -224,21 +223,18 @@ const ChallengeScreen: React.FC = () => {
 
         <LevelSection
           title={translations.easy_level}
-          icon="✅"
           challenges={easyChallenges}
           startIndex={0}
         />
 
         <LevelSection
           title={translations.medium_level}
-          icon="⚡"
           challenges={mediumChallenges}
           startIndex={3}
         />
 
         <LevelSection
           title={translations.hard_level}
-          icon="🔥"
           challenges={hardChallenges}
           startIndex={6}
         />
@@ -295,10 +291,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: 12,
   },
-  sectionIcon: {
-    fontSize: 24,
-    marginRight: 8,
-  },
   sectionTitle: {
     fontSize: 18,
     fontWeight: 'bold',
@@ -325,7 +317,13 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: '600',
     color: '#1e293b',
-    marginBottom: 4,
+    marginBottom: 2,
+  },
+  challengeDescriptionPreview: {
+    fontSize: 12,
+    color: '#64748b',
+    marginTop: 4,
+    lineHeight: 16,
   },
   subscribeButton: {
     width: 36,
