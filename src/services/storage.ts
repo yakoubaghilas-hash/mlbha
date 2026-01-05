@@ -10,6 +10,7 @@ export interface DayData {
 
 export interface UserProfile {
   tags: string[];
+  strategies: string[];
   workoutType?: 'running' | 'swimming';
   workoutDates: string[];
 }
@@ -86,10 +87,10 @@ export const saveProfile = async (profile: UserProfile): Promise<void> => {
 export const getProfile = async (): Promise<UserProfile> => {
   try {
     const data = await AsyncStorage.getItem(PROFILE_KEY);
-    return data ? JSON.parse(data) : { tags: [], workoutDates: [] };
+    return data ? JSON.parse(data) : { tags: [], strategies: [], workoutDates: [] };
   } catch (error) {
     console.error('Error getting profile:', error);
-    return { tags: [], workoutDates: [] };
+    return { tags: [], strategies: [], workoutDates: [] };
   }
 };
 

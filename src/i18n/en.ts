@@ -38,6 +38,20 @@ const en = {
   party: 'Party',
   work_break: 'Work Break',
   metro: 'Metro Exit',
+  add_tag: 'Add a tag',
+  
+  // Anti-Craving Strategies
+  anti_craving_strategy: 'Anti-Craving Strategy',
+  add_strategy: 'Add a strategy',
+  hydration: 'Hydration',
+  breathing: 'Breathing',
+  movement: 'Movement',
+  healthy_snacking: 'Healthy Snacking',
+  distraction: 'Distraction',
+  meditation: 'Meditation',
+  journal: 'Journal',
+  substitution: 'Substitution',
+  motivation: 'Motivation',
   
   // Overview Screen
   statistics: 'Statistics',

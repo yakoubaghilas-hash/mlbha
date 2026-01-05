@@ -20,6 +20,8 @@ const HomeScreen: React.FC = () => {
   const { language } = useLanguage();
   const [newTag, setNewTag] = useState('');
   const [showTagInput, setShowTagInput] = useState(false);
+  const [newStrategy, setNewStrategy] = useState('');
+  const [showStrategyInput, setShowStrategyInput] = useState(false);
   const [alertMessage, setAlertMessage] = useState<string | null>(null);
   const [allData, setAllData] = useState<any[]>([]);
 
@@ -52,6 +54,8 @@ const HomeScreen: React.FC = () => {
     medium: i18n.t('medium'),
     good: i18n.t('good'),
     reason: i18n.t('reason'),
+    anti_craving_strategy: i18n.t('anti_craving_strategy'),
+    add_strategy: i18n.t('add_strategy'),
     mood: i18n.t('mood'),
     stress: i18n.t('stress'),
     social: i18n.t('social'),
@@ -63,6 +67,15 @@ const HomeScreen: React.FC = () => {
     metro: i18n.t('metro'),
     add_reason: i18n.t('add_reason'),
     add_tag: i18n.t('add_tag'),
+    hydration: i18n.t('hydration'),
+    breathing: i18n.t('breathing'),
+    movement: i18n.t('movement'),
+    healthy_snacking: i18n.t('healthy_snacking'),
+    distraction: i18n.t('distraction'),
+    meditation: i18n.t('meditation'),
+    journal: i18n.t('journal'),
+    substitution: i18n.t('substitution'),
+    motivation: i18n.t('motivation'),
     morning: i18n.t('morning'),
     afternoon: i18n.t('afternoon'),
     evening: i18n.t('evening'),
@@ -143,6 +156,32 @@ const HomeScreen: React.FC = () => {
     updateProfile(updatedProfile);
   };
 
+  const handleAddStrategy = (strategy: string) => {
+    if (!profile.strategies.includes(strategy)) {
+      const updatedProfile = {
+        ...profile,
+        strategies: [...profile.strategies, strategy],
+      };
+      updateProfile(updatedProfile);
+    }
+  };
+
+  const handleAddCustomStrategy = () => {
+    if (newStrategy.trim()) {
+      handleAddStrategy(newStrategy.trim());
+      setNewStrategy('');
+      setShowStrategyInput(false);
+    }
+  };
+
+  const handleRemoveStrategy = (index: number) => {
+    const updatedProfile = {
+      ...profile,
+      strategies: profile.strategies.filter((_, i) => i !== index),
+    };
+    updateProfile(updatedProfile);
+  };
+
   const showAlert = (message: string) => {
     setAlertMessage(message);
     setTimeout(() => setAlertMessage(null), 4000); // Disappear after 4 seconds
@@ -214,101 +253,241 @@ const HomeScreen: React.FC = () => {
           </View>
         )}
 
-        {/* Reason Section */}
-        <View style={styles.reasonSection}>
-        <Text style={styles.reasonLabel}>{translations.reason}</Text>
-        
-        {/* Suggested Reasons */}
-        <View style={styles.suggestedReasonsContainer}>
-          <TouchableOpacity
-            style={styles.suggestedReason}
-            onPress={() => handleAddTag(translations.mood)}
-          >
-            <Text style={styles.suggestedReasonText}>😊 {translations.mood}</Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity
-            style={styles.suggestedReason}
-            onPress={() => handleAddTag(translations.stress)}
-          >
-            <Text style={styles.suggestedReasonText}>😰 {translations.stress}</Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity
-            style={styles.suggestedReason}
-            onPress={() => handleAddTag(translations.social)}
-          >
-            <Text style={styles.suggestedReasonText}>👥 {translations.social}</Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity
-            style={styles.suggestedReason}
-            onPress={() => handleAddTag(translations.boredom)}
-          >
-            <Text style={styles.suggestedReasonText}>😑 {translations.boredom}</Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity
-            style={styles.suggestedReason}
-            onPress={() => handleAddTag(translations.habits)}
-          >
-            <Text style={styles.suggestedReasonText}>👔 {translations.habits}</Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity
-            style={styles.suggestedReason}
-            onPress={() => handleAddTag(translations.concentration)}
-          >
-            <Text style={styles.suggestedReasonText}>🧠 {translations.concentration}</Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity
-            style={styles.suggestedReason}
-            onPress={() => handleAddTag(translations.party)}
-          >
-            <Text style={styles.suggestedReasonText}>🎉 {translations.party}</Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity
-            style={styles.suggestedReason}
-            onPress={() => handleAddTag(translations.work_break)}
-          >
-            <Text style={styles.suggestedReasonText}>☕ {translations.work_break}</Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity
-            style={styles.suggestedReason}
-            onPress={() => handleAddTag(translations.metro)}
-          >
-            <Text style={styles.suggestedReasonText}>🚇 {translations.metro}</Text>
-          </TouchableOpacity>
-        </View>
-
-        {/* Active Reasons */}
-        {profile.tags.length > 0 && (
-          <View style={styles.activeReasonsContainer}>
-            {profile.tags.map((reason, index) => (
+        {/* Reason & Strategy Sections */}
+        <View style={styles.reasonStrategyContainer}>
+          {/* Reason Section */}
+          <View style={[styles.reasonSection, styles.sideSection]}>
+            <Text style={styles.reasonLabel}>{translations.reason}</Text>
+            
+            {/* Suggested Reasons */}
+            <View style={styles.suggestedReasonsContainer}>
               <TouchableOpacity
-                key={index}
-                style={styles.activeReason}
-                onPress={() => handleRemoveTag(index)}
+                style={styles.suggestedReason}
+                onPress={() => handleAddTag(translations.mood)}
               >
-                <Text style={styles.activeReasonText}>{reason} ✕</Text>
+                <Text style={styles.suggestedReasonText}>😊 {translations.mood}</Text>
               </TouchableOpacity>
-            ))}
-          </View>
-        )}
 
-        {/* Add Custom Reason */}
-        {!showTagInput ? (
-          <TouchableOpacity
-            style={styles.addReasonButton}
-            onPress={() => setShowTagInput(true)}
-          >
-            <Text style={styles.addReasonButtonText}>+ {translations.add_reason}</Text>
-          </TouchableOpacity>
-        ) : (
-          <View style={styles.tagInputContainer}>
+              <TouchableOpacity
+                style={styles.suggestedReason}
+                onPress={() => handleAddTag(translations.stress)}
+              >
+                <Text style={styles.suggestedReasonText}>😰 {translations.stress}</Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                style={styles.suggestedReason}
+                onPress={() => handleAddTag(translations.social)}
+              >
+                <Text style={styles.suggestedReasonText}>👥 {translations.social}</Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                style={styles.suggestedReason}
+                onPress={() => handleAddTag(translations.boredom)}
+              >
+                <Text style={styles.suggestedReasonText}>😑 {translations.boredom}</Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                style={styles.suggestedReason}
+                onPress={() => handleAddTag(translations.habits)}
+              >
+                <Text style={styles.suggestedReasonText}>👔 {translations.habits}</Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                style={styles.suggestedReason}
+                onPress={() => handleAddTag(translations.concentration)}
+              >
+                <Text style={styles.suggestedReasonText}>🧠 {translations.concentration}</Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                style={styles.suggestedReason}
+                onPress={() => handleAddTag(translations.party)}
+              >
+                <Text style={styles.suggestedReasonText}>🎉 {translations.party}</Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                style={styles.suggestedReason}
+                onPress={() => handleAddTag(translations.work_break)}
+              >
+                <Text style={styles.suggestedReasonText}>☕ {translations.work_break}</Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                style={styles.suggestedReason}
+                onPress={() => handleAddTag(translations.metro)}
+              >
+                <Text style={styles.suggestedReasonText}>🚇 {translations.metro}</Text>
+              </TouchableOpacity>
+            </View>
+
+            {/* Active Reasons */}
+            {profile.tags.length > 0 && (
+              <View style={styles.activeReasonsContainer}>
+                {profile.tags.map((reason, index) => (
+                  <TouchableOpacity
+                    key={index}
+                    style={styles.activeReason}
+                    onPress={() => handleRemoveTag(index)}
+                  >
+                    <Text style={styles.activeReasonText}>{reason} ✕</Text>
+                  </TouchableOpacity>
+                ))}
+              </View>
+            )}
+
+            {/* Add Custom Reason */}
+            {!showTagInput ? (
+              <TouchableOpacity
+                style={styles.addReasonButton}
+                onPress={() => setShowTagInput(true)}
+              >
+                <Text style={styles.addReasonButtonText}>+ {translations.add_reason}</Text>
+              </TouchableOpacity>
+            ) : (
+              <View style={styles.tagInputContainer}>
+                <TextInput
+                  style={styles.tagInput}
+                  placeholder={translations.add_tag}
+                  placeholderTextColor="#94a3b8"
+                  value={newTag}
+                  onChangeText={setNewTag}
+                  onSubmitEditing={handleAddCustomTag}
+                />
+                <TouchableOpacity
+                  style={styles.tagInputButton}
+                  onPress={handleAddCustomTag}
+                >
+                  <Text style={styles.tagInputButtonText}>✓</Text>
+                </TouchableOpacity>
+              </View>
+            )}
+          </View>
+
+          {/* Anti-Craving Strategy Section */}
+          <View style={[styles.reasonSection, styles.sideSection]}>
+            <Text style={styles.reasonLabel}>{translations.anti_craving_strategy}</Text>
+            
+            {/* Suggested Strategies */}
+            <View style={styles.suggestedReasonsContainer}>
+              <TouchableOpacity
+                style={styles.suggestedReason}
+                onPress={() => handleAddStrategy(translations.hydration)}
+              >
+                <Text style={styles.suggestedReasonText}>💧 {translations.hydration}</Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                style={styles.suggestedReason}
+                onPress={() => handleAddStrategy(translations.breathing)}
+              >
+                <Text style={styles.suggestedReasonText}>🫁 {translations.breathing}</Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                style={styles.suggestedReason}
+                onPress={() => handleAddStrategy(translations.movement)}
+              >
+                <Text style={styles.suggestedReasonText}>🚶 {translations.movement}</Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                style={styles.suggestedReason}
+                onPress={() => handleAddStrategy(translations.healthy_snacking)}
+              >
+                <Text style={styles.suggestedReasonText}>🍎 {translations.healthy_snacking}</Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                style={styles.suggestedReason}
+                onPress={() => handleAddStrategy(translations.distraction)}
+              >
+                <Text style={styles.suggestedReasonText}>🎮 {translations.distraction}</Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                style={styles.suggestedReason}
+                onPress={() => handleAddStrategy(translations.meditation)}
+              >
+                <Text style={styles.suggestedReasonText}>🧘 {translations.meditation}</Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                style={styles.suggestedReason}
+                onPress={() => handleAddStrategy(translations.social)}
+              >
+                <Text style={styles.suggestedReasonText}>👥 {translations.social}</Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                style={styles.suggestedReason}
+                onPress={() => handleAddStrategy(translations.journal)}
+              >
+                <Text style={styles.suggestedReasonText}>📝 {translations.journal}</Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                style={styles.suggestedReason}
+                onPress={() => handleAddStrategy(translations.substitution)}
+              >
+                <Text style={styles.suggestedReasonText}>🔄 {translations.substitution}</Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                style={styles.suggestedReason}
+                onPress={() => handleAddStrategy(translations.motivation)}
+              >
+                <Text style={styles.suggestedReasonText}>💪 {translations.motivation}</Text>
+              </TouchableOpacity>
+            </View>
+
+            {/* Active Strategies */}
+            {profile.strategies && profile.strategies.length > 0 && (
+              <View style={styles.activeReasonsContainer}>
+                {profile.strategies.map((strategy, index) => (
+                  <TouchableOpacity
+                    key={index}
+                    style={styles.activeReason}
+                    onPress={() => handleRemoveStrategy(index)}
+                  >
+                    <Text style={styles.activeReasonText}>{strategy} ✕</Text>
+                  </TouchableOpacity>
+                ))}
+              </View>
+            )}
+
+            {/* Add Custom Strategy */}
+            {!showStrategyInput ? (
+              <TouchableOpacity
+                style={styles.addReasonButton}
+                onPress={() => setShowStrategyInput(true)}
+              >
+                <Text style={styles.addReasonButtonText}>+ {translations.add_strategy}</Text>
+              </TouchableOpacity>
+            ) : (
+              <View style={styles.tagInputContainer}>
+                <TextInput
+                  style={styles.tagInput}
+                  placeholder={translations.add_strategy}
+                  placeholderTextColor="#94a3b8"
+                  value={newStrategy}
+                  onChangeText={setNewStrategy}
+                  onSubmitEditing={handleAddCustomStrategy}
+                />
+                <TouchableOpacity
+                  style={styles.tagInputButton}
+                  onPress={handleAddCustomStrategy}
+                >
+                  <Text style={styles.tagInputButtonText}>✓</Text>
+                </TouchableOpacity>
+              </View>
+            )}
+          </View>
+        </View>
             <TextInput
               style={styles.tagInput}
               placeholder={translations.add_tag}
@@ -519,6 +698,16 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.1,
     shadowRadius: 3,
     elevation: 2,
+  },
+  reasonStrategyContainer: {
+    flexDirection: 'row',
+    gap: 10,
+    paddingHorizontal: 8,
+    marginVertical: 10,
+  },
+  sideSection: {
+    flex: 1,
+    marginHorizontal: 8,
   },
   reasonLabel: {
     fontSize: 12,

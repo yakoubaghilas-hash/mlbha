@@ -33,6 +33,25 @@ const es = {
   mood: 'Estado de Ánimo',
   stress: 'Estrés',
   social: 'Contexto Social',
+  boredom: 'Aburrimiento',
+  habits: 'Hábitos',
+  concentration: 'Concentración',
+  party: 'Fiesta',
+  work_break: 'Pausa de Trabajo',
+  metro: 'Salida del Metro',
+  
+  // Anti-Craving Strategies
+  anti_craving_strategy: 'Estrategia Anti-Antojo',
+  add_strategy: 'Añadir una estrategia',
+  hydration: 'Hidratación',
+  breathing: 'Respiración',
+  movement: 'Movimiento',
+  healthy_snacking: 'Snacks Saludables',
+  distraction: 'Distracción',
+  meditation: 'Meditación',
+  journal: 'Diario',
+  substitution: 'Sustitución',
+  motivation: 'Motivación',
   
   // Overview Screen
   statistics: 'Estadísticas',
