@@ -124,6 +124,13 @@ export default function TabLayout() {
           title: i18n.t('overview'),
         }}
       />
+      <Tabs.Screen
+        key={`challenge-${language}`}
+        name="challenge"
+        options={{
+          title: i18n.t('challenges'),
+        }}
+      />
     </Tabs>
   );
 }
