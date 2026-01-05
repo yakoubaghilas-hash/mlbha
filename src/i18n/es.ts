@@ -63,6 +63,10 @@ const es = {
   alert_hours: 'Último cigarrillo hace {count} hora{plural}',
   alert_days: 'Último cigarrillo hace {count} día{plural}',
   
+  // Overview - Top reasons
+  top_reasons: 'Razones Principales',
+  no_reasons_tracked: 'Sin razones registradas',
+  
   // Tips Screen
   quit_methods: 'Métodos para Dejar de Fumar',
   e_cigarette: 'Cigarrillo Electrónico / Boquilla de Plástico',

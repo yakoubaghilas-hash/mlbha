@@ -7,7 +7,7 @@ import {
   ScrollView,
   TouchableOpacity,
 } from 'react-native';
-import { LineChart, BarChart } from 'react-native-chart-kit';
+import { LineChart, BarChart, PieChart } from 'react-native-chart-kit';
 import { Dimensions } from 'react-native';
 import i18n from '../i18n';
 import { useCigarette } from '../context/CigaretteContext';
@@ -47,6 +47,40 @@ const getYearlyData = (data: DayData[]) => {
   };
 };
 
+// Function to get tag frequency data
+const getTagFrequencyData = (data: DayData[]) => {
+  const tagCounts: { [key: string]: number } = {};
+  
+  data.forEach((day) => {
+    if (day.tags) {
+      day.tags.forEach((tag) => {
+        tagCounts[tag] = (tagCounts[tag] || 0) + 1;
+      });
+    }
+  });
+
+  // Sort by frequency and get top 6
+  const sortedTags = Object.entries(tagCounts)
+    .sort(([, a], [, b]) => b - a)
+    .slice(0, 6);
+
+  if (sortedTags.length === 0) {
+    return null;
+  }
+
+  const colors = ['#3b82f6', '#ef4444', '#f97316', '#8b5cf6', '#06b6d4', '#10b981'];
+
+  return {
+    labels: sortedTags.map(([tag]) => tag),
+    datasets: [
+      {
+        data: sortedTags.map(([, count]) => count),
+      },
+    ],
+    colors: colors.slice(0, sortedTags.length),
+  };
+};
+
 const OverviewScreen: React.FC = () => {
   const { language } = useLanguage();
   const [viewType, setViewType] = useState<ViewType>('weekly');
@@ -70,6 +104,8 @@ const OverviewScreen: React.FC = () => {
     dollars: i18n.t('dollars'),
     hours: i18n.t('hours'),
     days: i18n.t('days'),
+    top_reasons: i18n.t('top_reasons'),
+    no_reasons_tracked: i18n.t('no_reasons_tracked'),
   }), [language]);
 
   useEffect(() => {
@@ -92,6 +128,9 @@ const OverviewScreen: React.FC = () => {
 
     loadData();
   }, [viewType, language]);
+
+  // Get tag frequency data for pie chart
+  const tagFrequencyData = useMemo(() => getTagFrequencyData(data), [data]);
 
   const displayData = viewType === 'weekly' ? 
     data.slice(Math.max(0, data.length - 7)) : 
@@ -246,6 +285,42 @@ const OverviewScreen: React.FC = () => {
           />
         </View>
 
+        {/* Top Reasons Pie Chart */}
+        {tagFrequencyData ? (
+          <View style={styles.section}>
+            <Text style={styles.sectionTitle}>{translations.top_reasons}</Text>
+            <View style={styles.pieChartContainer}>
+              <PieChart
+                data={tagFrequencyData.labels.map((label, index) => ({
+                  name: label,
+                  count: tagFrequencyData.datasets[0].data[index],
+                  color: tagFrequencyData.colors[index],
+                  legendFontColor: '#333',
+                  legendFontSize: 12,
+                }))}
+                width={screenWidth - 40}
+                height={220}
+                chartConfig={{
+                  color: () => '#000',
+                  labelColor: () => '#000',
+                }}
+                accessor="count"
+                backgroundColor="transparent"
+                paddingLeft="15"
+              />
+            </View>
+          </View>
+        ) : (
+          <View style={styles.section}>
+            <Text style={styles.sectionTitle}>{translations.top_reasons}</Text>
+            <View style={styles.emptyState}>
+              <Text style={styles.emptyStateText}>
+                {translations.no_reasons_tracked}
+              </Text>
+            </View>
+          </View>
+        )}
+
         {/* Data Table */}
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>{translations.daily}</Text>
@@ -384,6 +459,23 @@ const styles = StyleSheet.create({
   },
   loadingText: {
     fontSize: 16,
+    color: '#0891b2',
+  },
+  pieChartContainer: {
+    backgroundColor: '#fff',
+    borderRadius: 12,
+    padding: 12,
+    alignItems: 'center',
+    marginBottom: 12,
+  },
+  emptyState: {
+    backgroundColor: '#fff',
+    borderRadius: 12,
+    padding: 40,
+    alignItems: 'center',
+  },
+  emptyStateText: {
+    fontSize: 14,
     color: '#0891b2',
   },
   statsContainer: {

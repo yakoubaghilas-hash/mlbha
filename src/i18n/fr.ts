@@ -69,6 +69,10 @@ const fr = {
   alert_hours: 'Dernière cigarette il y a {count} heure{plural}',
   alert_days: 'Dernière cigarette il y a {count} jour{plural}',
   
+  // Overview - Top reasons
+  top_reasons: 'Principales Raisons',
+  no_reasons_tracked: 'Aucune raison enregistrée',
+  
   // Tips Screen
   quit_methods: 'Méthodes pour Arrêter',
   e_cigarette: 'Cigarette Électronique / Embout Plastique',

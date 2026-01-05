@@ -69,6 +69,10 @@ const en = {
   alert_hours: 'Last cigarette {count} hour{plural} ago',
   alert_days: 'Last cigarette {count} day{plural} ago',
   
+  // Overview - Top reasons
+  top_reasons: 'Top Reasons',
+  no_reasons_tracked: 'No reasons tracked',
+  
   // Tips Screen
   quit_methods: 'Methods to Quit Smoking',
   e_cigarette: 'E-cigarette / Plastic Mouthpiece',
