@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import {
   View,
   Text,
@@ -11,14 +11,36 @@ import {
 import i18n from '../i18n';
 import { useCigarette } from '../context/CigaretteContext';
 import { useLanguage } from '../context/LanguageContext';
+import { getAllData } from '../services/storage';
+import { checkChallengeStatus } from '../utils/challengeChecker';
 
 const HomeScreen: React.FC = () => {
-  const { todayData, profile, updateProfile, addCigarette, removeCigarette, getProfileLevel } =
+  const { todayData, profile, updateProfile, addCigarette, removeCigarette, getProfileLevel, subscribedChallenges, updateChallengeStatus } =
     useCigarette();
   const { language } = useLanguage();
   const [newTag, setNewTag] = useState('');
   const [showTagInput, setShowTagInput] = useState(false);
   const [alertMessage, setAlertMessage] = useState<string | null>(null);
+  const [allData, setAllData] = useState<any[]>([]);
+
+  // Load all data for challenge checking
+  useEffect(() => {
+    const loadData = async () => {
+      const data = await getAllData();
+      setAllData(data);
+      
+      // Check and update challenge statuses
+      for (const challenge of subscribedChallenges) {
+        if (challenge.status === 'active') {
+          const newStatus = checkChallengeStatus(challenge.id, todayData, data);
+          if (newStatus !== 'active') {
+            await updateChallengeStatus(challenge.id, newStatus);
+          }
+        }
+      }
+    };
+    loadData();
+  }, [todayData]);
 
   // Create translations object that updates when language changes
   const translations = useMemo(() => ({
@@ -140,6 +162,35 @@ const HomeScreen: React.FC = () => {
             {translations.status}: {translations[level === 'Ready for Perfection' ? 'ready_perfection' : level.toLowerCase() as keyof typeof translations]}
           </Text>
         </View>
+
+        {/* Subscribed Challenges Section */}
+        {subscribedChallenges.length > 0 && (
+          <View style={styles.challengesSection}>
+            <Text style={styles.challengesSectionLabel}>Défis en cours</Text>
+            <View style={styles.subscribedChallengesContainer}>
+              {subscribedChallenges.map((challenge) => {
+                const statusColors = {
+                  active: '#0891b2',
+                  won: '#22c55e',
+                  lost: '#ef4444',
+                };
+                return (
+                  <View
+                    key={challenge.id}
+                    style={[
+                      styles.subscribedChallenge,
+                      { backgroundColor: statusColors[challenge.status] }
+                    ]}
+                  >
+                    <Text style={styles.subscribedChallengeText}>
+                      {challenge.status === 'won' ? '✓' : challenge.status === 'lost' ? '✗' : '●'} {challenge.id.replace(/_/g, ' ')}
+                    </Text>
+                  </View>
+                );
+              })}
+            </View>
+          </View>
+        )}
 
         {/* Reason Section */}
         <View style={styles.reasonSection}>
@@ -400,6 +451,40 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontSize: 12,
     fontWeight: '600',
+  },
+  challengesSection: {
+    marginHorizontal: 16,
+    marginVertical: 10,
+    padding: 12,
+    backgroundColor: '#fff',
+    borderRadius: 12,
+    shadowColor: '#0078D4',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.1,
+    shadowRadius: 3,
+    elevation: 2,
+  },
+  challengesSectionLabel: {
+    fontSize: 12,
+    fontWeight: 'bold',
+    color: '#0078D4',
+    marginBottom: 10,
+  },
+  subscribedChallengesContainer: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: 8,
+  },
+  subscribedChallenge: {
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    borderRadius: 16,
+  },
+  subscribedChallengeText: {
+    color: '#fff',
+    fontSize: 11,
+    fontWeight: '600',
+    textTransform: 'capitalize',
   },
   reasonSection: {
     marginHorizontal: 16,

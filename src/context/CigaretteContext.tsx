@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import { getDayData, saveDayData, DayData, UserProfile, getProfile, saveProfile } from '../services/storage';
+import { getDayData, saveDayData, DayData, UserProfile, getProfile, saveProfile, getSubscribedChallenges, subscribeToChallenge, unsubscribeFromChallenge, updateChallengeStatus, SubscribedChallenge } from '../services/storage';
 
 interface CigaretteContextType {
   // Current day data
@@ -15,6 +15,12 @@ interface CigaretteContextType {
   // Profile
   profile: UserProfile;
   updateProfile: (profile: UserProfile) => void;
+  
+  // Challenges
+  subscribedChallenges: SubscribedChallenge[];
+  subscribeToChallenge: (challengeId: string) => Promise<void>;
+  unsubscribeFromChallenge: (challengeId: string) => Promise<void>;
+  updateChallengeStatus: (challengeId: string, status: 'active' | 'won' | 'lost') => Promise<void>;
   
   // Statistics
   getProfileLevel: () => 'Bad' | 'Medium' | 'Good' | 'Ready for Perfection';
@@ -36,6 +42,7 @@ export const CigaretteProvider: React.FC<{ children: React.ReactNode }> = ({ chi
     tags: [],
     workoutDates: [],
   });
+  const [subscribedChallenges, setSubscribedChallenges] = useState<SubscribedChallenge[]>([]);
   const [lastCigaretteTime, setLastCigaretteTime] = useState<number | null>(null);
 
   // Load today's data on mount
@@ -45,6 +52,8 @@ export const CigaretteProvider: React.FC<{ children: React.ReactNode }> = ({ chi
       setTodayDataState(data);
       const profileData = await getProfile();
       setProfileState(profileData);
+      const challenges = await getSubscribedChallenges();
+      setSubscribedChallenges(challenges);
     };
     loadData();
   }, [currentDate]);
@@ -97,6 +106,24 @@ export const CigaretteProvider: React.FC<{ children: React.ReactNode }> = ({ chi
     await saveProfile(newProfile);
   };
 
+  const handleSubscribeToChallenge = async (challengeId: string) => {
+    await subscribeToChallenge(challengeId);
+    const challenges = await getSubscribedChallenges();
+    setSubscribedChallenges(challenges);
+  };
+
+  const handleUnsubscribeFromChallenge = async (challengeId: string) => {
+    await unsubscribeFromChallenge(challengeId);
+    const challenges = await getSubscribedChallenges();
+    setSubscribedChallenges(challenges);
+  };
+
+  const handleUpdateChallengeStatus = async (challengeId: string, status: 'active' | 'won' | 'lost') => {
+    await updateChallengeStatus(challengeId, status);
+    const challenges = await getSubscribedChallenges();
+    setSubscribedChallenges(challenges);
+  };
+
   const getProfileLevel = (): 'Bad' | 'Medium' | 'Good' | 'Ready for Perfection' => {
     const total = todayData.morning + todayData.afternoon + todayData.evening;
     if (total === 0) return 'Ready for Perfection';
@@ -114,6 +141,10 @@ export const CigaretteProvider: React.FC<{ children: React.ReactNode }> = ({ chi
     setTodayData,
     profile,
     updateProfile,
+    subscribedChallenges,
+    subscribeToChallenge: handleSubscribeToChallenge,
+    unsubscribeFromChallenge: handleUnsubscribeFromChallenge,
+    updateChallengeStatus: handleUpdateChallengeStatus,
     getProfileLevel,
   };
 

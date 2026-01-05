@@ -14,8 +14,15 @@ export interface UserProfile {
   workoutDates: string[];
 }
 
+export interface SubscribedChallenge {
+  id: string; // challenge key (e.g., 'easy_reduction')
+  subscribedDate: string; // YYYY-MM-DD
+  status: 'active' | 'won' | 'lost';
+}
+
 const CIGARETTES_KEY = '@lbha_cigarettes';
 const PROFILE_KEY = '@lbha_profile';
+const CHALLENGES_KEY = '@lbha_challenges';
 
 // Cigarette tracking
 export const saveDayData = async (dayData: DayData): Promise<void> => {
@@ -83,5 +90,61 @@ export const getProfile = async (): Promise<UserProfile> => {
   } catch (error) {
     console.error('Error getting profile:', error);
     return { tags: [], workoutDates: [] };
+  }
+};
+
+// Challenges
+export const subscribeToChallenge = async (challengeId: string): Promise<void> => {
+  try {
+    const all = await AsyncStorage.getItem(CHALLENGES_KEY);
+    const challenges: SubscribedChallenge[] = all ? JSON.parse(all) : [];
+    
+    // Check if already subscribed
+    if (!challenges.find(c => c.id === challengeId)) {
+      const today = new Date().toISOString().split('T')[0];
+      challenges.push({
+        id: challengeId,
+        subscribedDate: today,
+        status: 'active',
+      });
+      await AsyncStorage.setItem(CHALLENGES_KEY, JSON.stringify(challenges));
+    }
+  } catch (error) {
+    console.error('Error subscribing to challenge:', error);
+  }
+};
+
+export const unsubscribeFromChallenge = async (challengeId: string): Promise<void> => {
+  try {
+    const all = await AsyncStorage.getItem(CHALLENGES_KEY);
+    const challenges: SubscribedChallenge[] = all ? JSON.parse(all) : [];
+    const filtered = challenges.filter(c => c.id !== challengeId);
+    await AsyncStorage.setItem(CHALLENGES_KEY, JSON.stringify(filtered));
+  } catch (error) {
+    console.error('Error unsubscribing from challenge:', error);
+  }
+};
+
+export const getSubscribedChallenges = async (): Promise<SubscribedChallenge[]> => {
+  try {
+    const data = await AsyncStorage.getItem(CHALLENGES_KEY);
+    return data ? JSON.parse(data) : [];
+  } catch (error) {
+    console.error('Error getting subscribed challenges:', error);
+    return [];
+  }
+};
+
+export const updateChallengeStatus = async (challengeId: string, status: 'active' | 'won' | 'lost'): Promise<void> => {
+  try {
+    const all = await AsyncStorage.getItem(CHALLENGES_KEY);
+    const challenges: SubscribedChallenge[] = all ? JSON.parse(all) : [];
+    const index = challenges.findIndex(c => c.id === challengeId);
+    if (index >= 0) {
+      challenges[index].status = status;
+      await AsyncStorage.setItem(CHALLENGES_KEY, JSON.stringify(challenges));
+    }
+  } catch (error) {
+    console.error('Error updating challenge status:', error);
   }
 };

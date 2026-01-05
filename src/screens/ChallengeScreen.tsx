@@ -9,8 +9,10 @@ import {
 } from 'react-native';
 import i18n from '../i18n';
 import { useLanguage } from '../context/LanguageContext';
+import { useCigarette } from '../context/CigaretteContext';
 
 interface Challenge {
+  id: string;
   title: string;
   description: string;
   difficulty: 'easy' | 'medium' | 'hard';
@@ -18,6 +20,7 @@ interface Challenge {
 
 const ChallengeScreen: React.FC = () => {
   const { language } = useLanguage();
+  const { subscribedChallenges, subscribeToChallenge, unsubscribeFromChallenge } = useCigarette();
   const [expandedChallenge, setExpandedChallenge] = useState<number | null>(null);
 
   const translations = useMemo(() => ({
@@ -56,48 +59,57 @@ const ChallengeScreen: React.FC = () => {
   const challenges: Challenge[] = [
     // Easy
     {
+      id: 'easy_reduction',
       title: translations.easy_reduction,
       description: translations.easy_reduction_desc,
       difficulty: 'easy',
     },
     {
+      id: 'easy_no_smoke',
       title: translations.easy_no_smoke,
       description: translations.easy_no_smoke_desc,
       difficulty: 'easy',
     },
     {
+      id: 'easy_hydration',
       title: translations.easy_hydration,
       description: translations.easy_hydration_desc,
       difficulty: 'easy',
     },
     // Medium
     {
+      id: 'medium_reduction',
       title: translations.medium_reduction,
       description: translations.medium_reduction_desc,
       difficulty: 'medium',
     },
     {
+      id: 'medium_pause',
       title: translations.medium_pause,
       description: translations.medium_pause_desc,
       difficulty: 'medium',
     },
     {
+      id: 'medium_substitution',
       title: translations.medium_substitution,
       description: translations.medium_substitution_desc,
       difficulty: 'medium',
     },
     // Hard
     {
+      id: 'hard_day',
       title: translations.hard_day,
       description: translations.hard_day_desc,
       difficulty: 'hard',
     },
     {
+      id: 'hard_multi_days',
       title: translations.hard_multi_days,
       description: translations.hard_multi_days_desc,
       difficulty: 'hard',
     },
     {
+      id: 'hard_radical',
       title: translations.hard_radical,
       description: translations.hard_radical_desc,
       difficulty: 'hard',
@@ -110,22 +122,54 @@ const ChallengeScreen: React.FC = () => {
 
   const ChallengeCard: React.FC<{ challenge: Challenge; index: number }> = ({ challenge, index }) => {
     const isExpanded = expandedChallenge === index;
+    const isSubscribed = subscribedChallenges.some(c => c.id === challenge.id);
+    
     const difficultyColors = {
       easy: '#84cc16',
       medium: '#f97316',
       hard: '#ef4444',
     };
 
+    const handleSubscribe = async () => {
+      if (isSubscribed) {
+        await unsubscribeFromChallenge(challenge.id);
+      } else {
+        await subscribeToChallenge(challenge.id);
+      }
+    };
+
     return (
-      <TouchableOpacity
-        style={[styles.challengeCard, { borderLeftColor: difficultyColors[challenge.difficulty] }]}
-        onPress={() => setExpandedChallenge(isExpanded ? null : index)}
-      >
-        <Text style={styles.challengeTitle}>{challenge.title}</Text>
+      <View style={[styles.challengeCard, { borderLeftColor: difficultyColors[challenge.difficulty] }]}>
+        <View style={styles.cardHeader}>
+          <TouchableOpacity
+            style={styles.cardTitleContainer}
+            onPress={() => setExpandedChallenge(isExpanded ? null : index)}
+          >
+            <Text style={styles.challengeTitle}>{challenge.title}</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={[
+              styles.subscribeButton,
+              {
+                backgroundColor: isSubscribed ? '#0891b2' : '#e0e7ff',
+              }
+            ]}
+            onPress={handleSubscribe}
+          >
+            <Text style={[
+              styles.subscribeButtonText,
+              {
+                color: isSubscribed ? '#fff' : '#0891b2',
+              }
+            ]}>
+              {isSubscribed ? '✓' : '+'}
+            </Text>
+          </TouchableOpacity>
+        </View>
         {isExpanded && (
           <Text style={styles.challengeDescription}>{challenge.description}</Text>
         )}
-      </TouchableOpacity>
+      </View>
     );
   };
 
@@ -237,11 +281,31 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     padding: 12,
   },
+  cardHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  cardTitleContainer: {
+    flex: 1,
+  },
   challengeTitle: {
     fontSize: 14,
     fontWeight: '600',
     color: '#1e293b',
     marginBottom: 4,
+  },
+  subscribeButton: {
+    width: 36,
+    height: 36,
+    borderRadius: 18,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginLeft: 8,
+  },
+  subscribeButtonText: {
+    fontSize: 18,
+    fontWeight: 'bold',
   },
   challengeDescription: {
     fontSize: 13,
