@@ -413,7 +413,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 28,
     fontWeight: 'bold',
-    color: '#0891b2',
+    color: '#0078D4',
   },
   viewSelector: {
     flexDirection: 'row',
@@ -431,12 +431,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   viewButtonActive: {
-    backgroundColor: '#0891b2',
-    borderColor: '#0891b2',
+    backgroundColor: '#0078D4',
+    borderColor: '#0078D4',
   },
   viewButtonText: {
     fontSize: 14,
-    color: '#0891b2',
+    color: '#0078D4',
     fontWeight: '600',
   },
   viewButtonTextActive: {
@@ -533,7 +533,7 @@ const styles = StyleSheet.create({
   sectionTitle: {
     fontSize: 18,
     fontWeight: '600',
-    color: '#0891b2',
+    color: '#0078D4',
     marginBottom: 12,
   },
   table: {

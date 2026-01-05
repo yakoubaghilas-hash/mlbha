@@ -275,12 +275,12 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 28,
     fontWeight: 'bold',
-    color: '#0891b2',
+    color: '#0078D4',
     marginBottom: 4,
   },
   subtitle: {
     fontSize: 14,
-    color: '#06b6d4',
+    color: '#0078D4',
   },
   section: {
     paddingHorizontal: 20,
@@ -294,7 +294,7 @@ const styles = StyleSheet.create({
   sectionTitle: {
     fontSize: 18,
     fontWeight: 'bold',
-    color: '#0891b2',
+    color: '#0078D4',
   },
   challengesContainer: {
     gap: 8,
