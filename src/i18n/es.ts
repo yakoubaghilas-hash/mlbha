@@ -159,7 +159,7 @@ const es = {
   pace_slow_desc: '−1 cigarrillo cada 5–7 días',
   pace_moderate_desc: '−1 cigarrillo cada 2–3 días',
   pace_fast_desc: '−1 cigarrillo por día',
-  motivation: 'Motivación Principal',
+  main_motivation: 'Motivación Principal',
   money: 'Ahorrar Dinero',
   family: 'Familia',
   start_plan: 'Comenzar Plan',

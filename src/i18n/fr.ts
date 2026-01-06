@@ -160,7 +160,7 @@ const fr = {
   pace_slow_desc: '−1 cigarette tous les 5–7 jours',
   pace_moderate_desc: '−1 cigarette tous les 2–3 jours',
   pace_fast_desc: '−1 cigarette par jour',
-  motivation: 'Motivation Principale',
+  main_motivation: 'Motivation Principale',
   money: 'Économiser de l\'Argent',
   family: 'Famille',
   start_plan: 'Commencer le Plan',

@@ -17,8 +17,8 @@ export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     setLanguage(lang);
   };
 
-  const t = (key: string, options?: any) => {
-    return i18n.t(key, options);
+  const t = (key: string) => {
+    return i18n.t(key);
   };
 
   return (

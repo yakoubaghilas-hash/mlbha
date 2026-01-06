@@ -6,6 +6,7 @@ interface CigaretteContextType {
   currentDate: string;
   todayData: DayData;
   lastCigaretteTime: number | null; // Timestamp of last cigarette
+  totalToday: number; // Total cigarettes today (morning + afternoon + evening)
   
   // Actions
   addCigarette: (period: 'morning' | 'afternoon' | 'evening') => { diffMins: number; diffHours: number; diffDays: number } | null;
@@ -40,6 +41,7 @@ export const CigaretteProvider: React.FC<{ children: React.ReactNode }> = ({ chi
   });
   const [profile, setProfileState] = useState<UserProfile>({
     tags: [],
+    strategies: [],
     workoutDates: [],
   });
   const [subscribedChallenges, setSubscribedChallenges] = useState<SubscribedChallenge[]>([]);
@@ -140,6 +142,7 @@ export const CigaretteProvider: React.FC<{ children: React.ReactNode }> = ({ chi
     currentDate,
     todayData,
     lastCigaretteTime,
+    totalToday: todayData.morning + todayData.afternoon + todayData.evening,
     addCigarette,
     removeCigarette,
     setTodayData,

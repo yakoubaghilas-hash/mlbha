@@ -159,7 +159,7 @@ const en = {
   pace_slow_desc: '−1 cigarette every 5–7 days',
   pace_moderate_desc: '−1 cigarette every 2–3 days',
   pace_fast_desc: '−1 cigarette per day',
-  motivation: 'Main Motivation',
+  main_motivation: 'Main Motivation',
   money: 'Save Money',
   family: 'Family',
   start_plan: 'Start Plan',

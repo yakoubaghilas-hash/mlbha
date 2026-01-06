@@ -30,9 +30,12 @@ export const feedbackService = {
   sendErrorFeedback: async (data: ErrorFeedbackData): Promise<void> => {
     try {
       // Check if EmailJS is properly configured
+      const publicKey: any = EMAILJS_PUBLIC_KEY;
+      const serviceId: any = EMAILJS_SERVICE_ID;
+      
       if (
-        EMAILJS_PUBLIC_KEY === 'YOUR_EMAILJS_PUBLIC_KEY' ||
-        EMAILJS_SERVICE_ID === 'YOUR_EMAILJS_SERVICE_ID'
+        publicKey === 'YOUR_EMAILJS_PUBLIC_KEY' ||
+        serviceId === 'YOUR_EMAILJS_SERVICE_ID'
       ) {
         // In development/test mode, just log and resolve
         console.log('Error feedback (development mode):', data);
