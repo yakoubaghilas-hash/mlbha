@@ -2,7 +2,7 @@
   "expo": {
     "name": "CigOff",
     "slug": "cigoff",
-    "version": "1.0.0",
+    "version": "1.0.2",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "scheme": "cigoff",
@@ -10,7 +10,7 @@
     "newArchEnabled": true,
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.yakoubaghilas.cigoff",
+      "bundleIdentifier": "com.yakoubaghilas.lostboyshealthyagain",
       "buildNumber": "1",
       "associatedDomains": [],
       "infoPlist": {

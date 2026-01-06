@@ -18,7 +18,7 @@
       "autoIncrement": true,
       "ios": {
         "image": "default",
-        "distribution": "app-store"
+        "distribution": "store"
       }
     }
   },
