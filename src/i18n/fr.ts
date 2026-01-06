@@ -1,5 +1,5 @@
 const fr = {
-  app_name: 'Make Lost Boys Healthy Again',
+  app_name: 'CigOff',
   description: 'Suivez votre consommation pour vous améliorer',
   
   // Navigation
@@ -90,6 +90,24 @@ const fr = {
   // Overview - Top strategies
   top_strategies: 'Principales Stratégies Utilisées',
   no_strategies_tracked: 'Aucune stratégie enregistrée',
+  
+  // Paywall
+  unlock_premium: 'Débloquez CigOff Premium',
+  access_all_tools: 'Accédez à tous les outils pour arrêter de fumer',
+  premium_trial: '7 jours gratuit',
+  premium_price: 'puis 9,99 $/mois',
+  premium_report: 'Rapport détaillé de progression',
+  premium_challenges: 'Défis personnalisés',
+  premium_reduction_plan: 'Plan de réduction progressif',
+  premium_notifications: 'Notifications intelligentes',
+  premium_trial_button: 'Essayer gratuitement',
+  premium_terms: 'J\'accepte les conditions d\'utilisation et la politique de confidentialité',
+  premium_auto_renew: 'L\'abonnement se renouvelle automatiquement. Vous pouvez l\'annuler à tout moment dans les Paramètres iOS.',
+  premium_restore: 'Restaurer les achats',
+  premium_activated: 'Essai gratuit activé!',
+  premium_activated_desc: 'Vous avez 7 jours gratuits. L\'abonnement se renouvellera automatiquement à 9,99 $/mois après.',
+  premium_error: 'Erreur',
+  premium_error_desc: 'Impossible de démarrer l\'essai gratuit. Veuillez réessayer.',
   
   // Challenge Screen
   challenges: 'Défis',

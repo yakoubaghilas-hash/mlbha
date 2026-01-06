@@ -6,6 +6,7 @@ import 'react-native-reanimated';
 
 import { CigaretteProvider } from '@/src/context/CigaretteContext';
 import { LanguageProvider } from '@/src/context/LanguageContext';
+import { SubscriptionProvider } from '@/src/context/SubscriptionContext';
 
 export const unstable_settings = {
   anchor: '(tabs)',
@@ -17,12 +18,14 @@ export default function RootLayout() {
   return (
     <CigaretteProvider>
       <LanguageProvider>
-        <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-          <Stack>
-            <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-          </Stack>
-          <StatusBar style="auto" />
-        </ThemeProvider>
+        <SubscriptionProvider>
+          <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
+            <Stack>
+              <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+            </Stack>
+            <StatusBar style="auto" />
+          </ThemeProvider>
+        </SubscriptionProvider>
       </LanguageProvider>
     </CigaretteProvider>
   );

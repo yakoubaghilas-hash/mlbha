@@ -11,14 +11,17 @@ import {
 import i18n from '../i18n';
 import { useCigarette } from '../context/CigaretteContext';
 import { useLanguage } from '../context/LanguageContext';
+import { useSubscription } from '../context/SubscriptionContext';
 import { getAllData } from '../services/storage';
 import { checkChallengeStatus } from '../utils/challengeChecker';
 import TimeSinceLastCigarette from '../components/TimeSinceLastCigarette';
+import { PaywallModal } from '../components/PaywallModal';
 
 const HomeScreen: React.FC = () => {
   const { todayData, profile, updateProfile, addCigarette, removeCigarette, getProfileLevel, subscribedChallenges, updateChallengeStatus } =
     useCigarette();
   const { language } = useLanguage();
+  const { subscriptionStatus } = useSubscription();
   const [newTag, setNewTag] = useState('');
   const [showTagInput, setShowTagInput] = useState(false);
   const [newStrategy, setNewStrategy] = useState('');
@@ -192,6 +195,8 @@ const HomeScreen: React.FC = () => {
 
   return (
     <SafeAreaView style={styles.container}>
+      {!subscriptionStatus.isPremium && <PaywallModal />}
+      
       {/* Alert Message */}
       {alertMessage && (
         <View style={styles.alertBanner}>

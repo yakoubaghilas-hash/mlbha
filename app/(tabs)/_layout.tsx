@@ -4,11 +4,13 @@ import { View, TouchableOpacity, Text, StyleSheet, Share, Alert, Image } from 'r
 import { useLanguage } from '@/src/context/LanguageContext';
 import i18n from '@/src/i18n';
 import { useCigarette } from '@/src/context/CigaretteContext';
+import { useSubscription } from '@/src/context/SubscriptionContext';
 
 export default function TabLayout() {
   const { language, changeLanguage } = useLanguage();
   const [renderVersion, setRenderVersion] = useState(0);
   const { totalToday } = useCigarette();
+  const { subscriptionStatus } = useSubscription();
 
   const handleLanguageChange = (lang: string) => {
     changeLanguage(lang);
@@ -18,8 +20,8 @@ export default function TabLayout() {
   const shareApp = async () => {
     try {
       await Share.share({
-        message: 'Check out Make Lost Boys Healthy Again - A smoking cessation tracking app! Rejoignez-moi pour arrêter de fumer!',
-        title: 'Make Lost Boys Healthy Again',
+        message: 'Check out CigOff - A smoking cessation tracking app! Rejoignez-moi pour arrêter de fumer!',
+        title: 'CigOff',
       });
     } catch (error) {
       Alert.alert('Error sharing app');
@@ -49,7 +51,10 @@ export default function TabLayout() {
                 source={require('../../logo.png')}
                 style={styles.logo}
               />
-              <Text style={styles.headerTitle}>Make Lost Boys Healthy Again</Text>
+              <View>
+                <Text style={styles.headerTitle}>CigOff</Text>
+                <Text style={styles.tagline}>One less. Every day</Text>
+              </View>
             </View>
             <View style={styles.languageButtons}>
               <TouchableOpacity
@@ -97,11 +102,6 @@ export default function TabLayout() {
               <TouchableOpacity style={styles.shareButton} onPress={shareApp}>
                 <Text style={styles.shareButtonText}>📱</Text>
               </TouchableOpacity>
-              <TouchableOpacity
-                style={styles.shareButton}
-                onPress={sharePerformance}>
-                <Text style={styles.shareButtonText}>📊</Text>
-              </TouchableOpacity>
             </View>
           </View>
         ),
@@ -117,27 +117,31 @@ export default function TabLayout() {
           title: i18n.t('home'),
         }}
       />
-      <Tabs.Screen
-        key={`overview-${language}`}
-        name="overview"
-        options={{
-          title: i18n.t('overview'),
-        }}
-      />
-      <Tabs.Screen
-        key={`challenge-${language}`}
-        name="challenge"
-        options={{
-          title: i18n.t('challenges'),
-        }}
-      />
-      <Tabs.Screen
-        key={`reduction-plan-${language}`}
-        name="reduction-plan"
-        options={{
-          title: i18n.t('reduction_plan') || 'Plan',
-        }}
-      />
+      {subscriptionStatus.isPremium && (
+        <>
+          <Tabs.Screen
+            key={`overview-${language}`}
+            name="overview"
+            options={{
+              title: i18n.t('overview'),
+            }}
+          />
+          <Tabs.Screen
+            key={`challenge-${language}`}
+            name="challenge"
+            options={{
+              title: i18n.t('challenges'),
+            }}
+          />
+          <Tabs.Screen
+            key={`reduction-plan-${language}`}
+            name="reduction-plan"
+            options={{
+              title: i18n.t('reduction_plan') || 'Plan',
+            }}
+          />
+        </>
+      )}
     </Tabs>
   );
 }
@@ -167,6 +171,11 @@ const styles = StyleSheet.create({
     fontSize: 8,
     fontWeight: 'bold',
     color: '#ffffff',
+  },
+  tagline: {
+    fontSize: 11,
+    color: '#e0e0e0',
+    marginTop: 2,
   },
   languageButtons: {
     flexDirection: 'row',
