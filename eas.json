@@ -11,6 +11,7 @@
     "preview": {
       "distribution": "internal",
       "ios": {
+        "image": "latest",
         "simulator": false
       },
       "env": {
@@ -20,7 +21,7 @@
     "production": {
       "autoIncrement": false,
       "ios": {
-        "image": "default",
+        "image": "latest",
         "distribution": "store"
       },
       "env": {
