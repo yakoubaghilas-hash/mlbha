@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import { getDayData, saveDayData, DayData, UserProfile, getProfile, saveProfile, getSubscribedChallenges, subscribeToChallenge, unsubscribeFromChallenge, updateChallengeStatus, SubscribedChallenge } from '../services/storage';
+import { getDayData, saveDayData, DayData, UserProfile, getProfile, saveProfile, getSubscribedChallenges, subscribeToChallenge, unsubscribeFromChallenge, updateChallengeStatus, SubscribedChallenge, getLastCigaretteTime, saveLastCigaretteTime } from '../services/storage';
 
 interface CigaretteContextType {
   // Current day data
@@ -54,6 +54,8 @@ export const CigaretteProvider: React.FC<{ children: React.ReactNode }> = ({ chi
       setProfileState(profileData);
       const challenges = await getSubscribedChallenges();
       setSubscribedChallenges(challenges);
+      const lastTime = await getLastCigaretteTime();
+      setLastCigaretteTime(lastTime);
     };
     loadData();
   }, [currentDate]);
@@ -87,6 +89,7 @@ export const CigaretteProvider: React.FC<{ children: React.ReactNode }> = ({ chi
       [period]: prev[period] + 1,
     }));
     setLastCigaretteTime(now);
+    saveLastCigaretteTime(now);
     
     return timeInfo;
   };

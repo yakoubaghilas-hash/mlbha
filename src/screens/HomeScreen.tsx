@@ -13,6 +13,7 @@ import { useCigarette } from '../context/CigaretteContext';
 import { useLanguage } from '../context/LanguageContext';
 import { getAllData } from '../services/storage';
 import { checkChallengeStatus } from '../utils/challengeChecker';
+import TimeSinceLastCigarette from '../components/TimeSinceLastCigarette';
 
 const HomeScreen: React.FC = () => {
   const { todayData, profile, updateProfile, addCigarette, removeCigarette, getProfileLevel, subscribedChallenges, updateChallengeStatus } =
@@ -254,6 +255,9 @@ const HomeScreen: React.FC = () => {
             </View>
           </View>
         )}
+
+        {/* Time Since Last Cigarette Counter */}
+        <TimeSinceLastCigarette />
 
         {/* Reason & Strategy Sections */}
         <View style={styles.reasonStrategyContainer}>

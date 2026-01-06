@@ -20,6 +20,7 @@ import {
   getAverageCigarettes,
 } from '../utils/statistics';
 import { DayData } from '../services/storage';
+import PdfExportButton from '../components/PdfExportButton';
 
 const screenWidth = Dimensions.get('window').width;
 
@@ -197,6 +198,9 @@ const OverviewScreen: React.FC = () => {
         <View style={styles.header}>
           <Text style={styles.title}>{translations.overview}</Text>
         </View>
+
+        {/* PDF Export Button */}
+        <PdfExportButton data={data} language={language} />
 
         {/* View Type Selector */}
         <View style={styles.viewSelector}>

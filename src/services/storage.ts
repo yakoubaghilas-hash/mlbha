@@ -25,6 +25,7 @@ export interface SubscribedChallenge {
 const CIGARETTES_KEY = '@lbha_cigarettes';
 const PROFILE_KEY = '@lbha_profile';
 const CHALLENGES_KEY = '@lbha_challenges';
+const LAST_CIGARETTE_TIME_KEY = '@lbha_last_cigarette_time';
 
 // Cigarette tracking
 export const saveDayData = async (dayData: DayData): Promise<void> => {
@@ -148,5 +149,24 @@ export const updateChallengeStatus = async (challengeId: string, status: 'active
     }
   } catch (error) {
     console.error('Error updating challenge status:', error);
+  }
+};
+
+// Last cigarette time tracking
+export const saveLastCigaretteTime = async (timestamp: number): Promise<void> => {
+  try {
+    await AsyncStorage.setItem(LAST_CIGARETTE_TIME_KEY, timestamp.toString());
+  } catch (error) {
+    console.error('Error saving last cigarette time:', error);
+  }
+};
+
+export const getLastCigaretteTime = async (): Promise<number | null> => {
+  try {
+    const data = await AsyncStorage.getItem(LAST_CIGARETTE_TIME_KEY);
+    return data ? parseInt(data, 10) : null;
+  } catch (error) {
+    console.error('Error getting last cigarette time:', error);
+    return null;
   }
 };

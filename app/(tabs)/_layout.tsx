@@ -131,6 +131,13 @@ export default function TabLayout() {
           title: i18n.t('challenges'),
         }}
       />
+      <Tabs.Screen
+        key={`reduction-plan-${language}`}
+        name="reduction-plan"
+        options={{
+          title: i18n.t('reduction_plan') || 'Plan',
+        }}
+      />
     </Tabs>
   );
 }
