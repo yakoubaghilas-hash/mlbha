@@ -12,6 +12,9 @@
       "distribution": "internal",
       "ios": {
         "simulator": false
+      },
+      "env": {
+        "RCT_NEW_ARCH_ENABLED": "1"
       }
     },
     "production": {
@@ -19,6 +22,9 @@
       "ios": {
         "image": "default",
         "distribution": "store"
+      },
+      "env": {
+        "RCT_NEW_ARCH_ENABLED": "1"
       }
     }
   },
