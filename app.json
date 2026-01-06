@@ -1,20 +1,21 @@
 {
   "expo": {
     "name": "CigOff",
-    "slug": "CigOff",
-    "version": "1.0.1",
+    "slug": "cigoff",
+    "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
-    "scheme": "lostboyshealthyagain",
+    "scheme": "cigoff",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.yakoubaghilas.lostboyshealthyagain",
-      "buildNumber": "2",
+      "bundleIdentifier": "com.yakoubaghilas.cigoff",
+      "buildNumber": "1",
       "associatedDomains": [],
       "infoPlist": {
-        "ITSAppUsesNonExemptEncryption": false
+        "ITSAppUsesNonExemptEncryption": false,
+        "NSMailUsageDescription": "This app uses email to send error reports to our support team."
       }
     },
     "android": {
