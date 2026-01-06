@@ -177,6 +177,71 @@ const es = {
   // Messages
   no_data: 'No hay datos disponibles',
   loading: 'Cargando...',
+
+  // Error feedback
+  error_feedback_title: '¡Vaya! Ocurrió un error',
+  error_feedback_description: '¡Lo sentimos! Algo salió mal. Ayúdanos enviando un informe de error.',
+  error_feedback_details: 'Detalles del error',
+  error_feedback_email: 'Tu correo electrónico',
+  error_feedback_email_placeholder: 'Ingresa tu dirección de correo electrónico',
+  error_feedback_message: '¿Qué estabas haciendo? (opcional)',
+  error_feedback_message_placeholder: 'Describe lo que sucedió...',
+  error_feedback_send: 'Enviar informe de error',
+  error_feedback_cancel: 'Cerrar',
+  error_feedback_success_title: '¡Gracias!',
+  error_feedback_success_message: 'Tu informe de error ha sido enviado. Lo investigaremos y lo corregiremos pronto.',
+  error_feedback_error_title: 'Error al enviar',
+  error_feedback_validation_error: 'Por favor, ingresa una dirección de correo electrónico válida',
+
+  // How to use
+  how_to_use_title: 'Cómo usar CigOff',
+  how_to_use_welcome: 'Descubre cómo usar CigOff para rastrear tu progreso y dejar de fumar.',
+  
+  how_to_use_section1_title: '📱 Rastrea tus cigarrillos diarios',
+  how_to_use_section1_desc: 'Monitorea tu consumo diario a lo largo del día. Esto te ayuda a entender tus hábitos y tu progreso.',
+  how_to_use_section1_step1: 'Abre la pestaña Inicio y ve tu contador diario de cigarrillos',
+  how_to_use_section1_step2: 'Usa el botón + para agregar cigarrillos, o - para deshacer',
+  how_to_use_section1_step3: 'Rastrea el consumo de la mañana, tarde y noche por separado',
+  
+  how_to_use_section2_title: '🤔 Identifica tus desencadenantes',
+  how_to_use_section2_desc: 'Entender por qué fumas es el primer paso para dejar de hacerlo. Agrega razones para cada cigarrillo.',
+  how_to_use_section2_step1: 'Selecciona razones: Estrés, Social, Aburrimiento, Concentración, etc.',
+  how_to_use_section2_step2: 'Identifica patrones - descubre cuándo tienes más probabilidades de fumar',
+  how_to_use_section2_step3: 'Usa estos datos para preparar mejores estrategias',
+  
+  how_to_use_section3_title: '💪 Agrega estrategias anti-antojos',
+  how_to_use_section3_desc: 'Construye tu kit personal para combatir los antojos. Agrega estrategias que funcionen para ti.',
+  how_to_use_section3_step1: 'Elige entre: Hidratación, Respiración, Movimiento, Bocadillos, Distracción',
+  how_to_use_section3_step2: 'O crea tus propias estrategias personalizadas',
+  how_to_use_section3_step3: 'Úsalas cada vez que sientas un antojo',
+  
+  how_to_use_section4_title: '📊 Crea tu plan de reducción',
+  how_to_use_section4_desc: 'Establece un plan gradual para reducir cigarrillos. Elige tu ritmo y motivación.',
+  how_to_use_section4_step1: 'Elige un ritmo de reducción: Lento (-1 cada 5-7 días), Moderado, o Rápido (-1 por día)',
+  how_to_use_section4_step2: 'Elige tu motivación principal: Ahorrar dinero, Familia, o Salud',
+  how_to_use_section4_step3: 'Sigue tus objetivos diarios y celebra cada hito',
+  
+  how_to_use_section5_title: 'Consejos para el éxito',
+  how_to_use_section5_desc: 'Aquí hay algunos consejos respaldados por la ciencia para ayudarte:',
+  how_to_use_section5_tip1: 'Sé consistente con el rastreo - aumenta tus posibilidades de éxito',
+  how_to_use_section5_tip2: 'Consulta tu pestaña de Descripción general para ver tu progreso',
+  how_to_use_section5_tip3: 'Cuando alcances 1 cigarrillo/día, se activa un modo especial "Cero cigarrillos" con desafíos',
+  
+  how_to_use_faq_title: 'Preguntas frecuentes',
+  how_to_use_faq_q1: '¿Qué pasa si fumo más de lo planeado?',
+  how_to_use_faq_a1: '¡No te desanimes! Dejar de fumar no es lineal. Simplemente reinicia tu contador y continúa. Cada intento te acerca al éxito.',
+  how_to_use_faq_q2: '¿Con qué frecuencia debo usar CigOff?',
+  how_to_use_faq_a2: 'Rastrea cada cigarrillo que fumes para obtener datos más precisos. La aplicación funciona mejor cuando la usas regularmente a lo largo del día.',
+
+  // Upcoming features
+  how_to_use_upcoming_title: 'Próximamente - Futuras actualizaciones',
+  how_to_use_upcoming_desc: 'Estamos mejorando constantemente CigOff con características inteligentes basadas en psicología del comportamiento.',
+  how_to_use_upcoming_feature1: 'Entrenador Inteligente: Orientación personalizada adaptada a tu perfil único',
+  how_to_use_upcoming_feature2: 'Integración Apple Watch: Registro rápido y detección de antojos en tu muñeca',
+  how_to_use_upcoming_feature3: 'Comunidad de Apoyo: Conéctate anónimamente con otros en etapas similares',
+  how_to_use_upcoming_feature4: 'Reprogramación de Hábitos: Detección automática de disparadores y rutinas alternativas',
+  how_to_use_upcoming_feature5: 'Gamificación: Construye tu mundo sin cigarrillos con zonas desbloqueables',
+  how_to_use_upcoming_feature6: 'Modo Discreto: Notificaciones discretas y exportación cifrada de tus datos',
 };
 
 export default es;

@@ -177,6 +177,71 @@ const en = {
   // Messages
   no_data: 'No data available',
   loading: 'Loading...',
+
+  // Error feedback
+  error_feedback_title: 'Oops! An Error Occurred',
+  error_feedback_description: 'We\'re sorry! Something went wrong. Please help us by sending an error report.',
+  error_feedback_details: 'Error Details',
+  error_feedback_email: 'Your Email',
+  error_feedback_email_placeholder: 'Enter your email address',
+  error_feedback_message: 'What were you doing? (optional)',
+  error_feedback_message_placeholder: 'Describe what happened...',
+  error_feedback_send: 'Send Error Report',
+  error_feedback_cancel: 'Dismiss',
+  error_feedback_success_title: 'Thank You!',
+  error_feedback_success_message: 'Your error report has been sent. We\'ll investigate and fix it soon.',
+  error_feedback_error_title: 'Failed to Send',
+  error_feedback_validation_error: 'Please enter a valid email address',
+
+  // How to use
+  how_to_use_title: 'How to Use CigOff',
+  how_to_use_welcome: 'Learn how to make the most of CigOff to track your journey and quit smoking.',
+  
+  how_to_use_section1_title: '📱 Track Your Daily Cigarettes',
+  how_to_use_section1_desc: 'Monitor your daily consumption throughout the day. This helps you understand your habits and progress over time.',
+  how_to_use_section1_step1: 'Open the Home tab and see your daily cigarette count',
+  how_to_use_section1_step2: 'Use the + button to add cigarettes smoked, or - to undo',
+  how_to_use_section1_step3: 'Track morning, afternoon, and evening consumption separately',
+  
+  how_to_use_section2_title: '🤔 Identify Your Triggers',
+  how_to_use_section2_desc: 'Understanding why you smoke is the first step to quitting. Add reasons for each cigarette you smoke.',
+  how_to_use_section2_step1: 'Select reasons: Stress, Social, Boredom, Concentration, etc.',
+  how_to_use_section2_step2: 'Track patterns - you\'ll discover when you\'re most likely to smoke',
+  how_to_use_section2_step3: 'Use this data to prepare better strategies',
+  
+  how_to_use_section3_title: '💪 Add Anti-Craving Strategies',
+  how_to_use_section3_desc: 'Build your personal toolkit to fight cravings. Add strategies that work for you.',
+  how_to_use_section3_step1: 'Choose from: Hydration, Breathing, Movement, Snacking, Distraction',
+  how_to_use_section3_step2: 'Or create your own custom strategies',
+  how_to_use_section3_step3: 'Use them whenever you feel a craving coming',
+  
+  how_to_use_section4_title: '📊 Create Your Reduction Plan',
+  how_to_use_section4_desc: 'Set a gradual plan to reduce cigarettes. Choose your pace and motivation.',
+  how_to_use_section4_step1: 'Pick a reduction pace: Slow (-1 per 5-7 days), Moderate, or Fast (-1 per day)',
+  how_to_use_section4_step2: 'Choose your main motivation: Save Money, Family, or Health',
+  how_to_use_section4_step3: 'Follow your daily goals and celebrate each milestone',
+  
+  how_to_use_section5_title: 'Pro Tips for Success',
+  how_to_use_section5_desc: 'Here are some science-backed tips to help you succeed:',
+  how_to_use_section5_tip1: 'Be consistent with tracking - it increases your chances of success',
+  how_to_use_section5_tip2: 'Check your Overview tab to see your progress and patterns',
+  how_to_use_section5_tip3: 'When you reach 1 cigarette/day, a special "Zero Cigarette" mode activates with challenges',
+  
+  how_to_use_faq_title: 'Frequently Asked Questions',
+  how_to_use_faq_q1: 'What if I smoke more than planned?',
+  how_to_use_faq_a1: 'Don\'t get discouraged! Quitting is not linear. Just reset your counter and continue. Every attempt brings you closer to success.',
+  how_to_use_faq_q2: 'How often should I use CigOff?',
+  how_to_use_faq_a2: 'Track every cigarette you smoke for the most accurate data. The app works best when you use it consistently throughout the day.',
+
+  // Upcoming features
+  how_to_use_upcoming_title: 'Coming Soon - Future Updates',
+  how_to_use_upcoming_desc: 'We\'re constantly improving CigOff with intelligent features based on behavioral psychology and AI insights.',
+  how_to_use_upcoming_feature1: 'Smart Coach: Personalized guidance adapted to your unique smoking profile',
+  how_to_use_upcoming_feature2: 'Apple Watch Integration: Quick logging and craving detection on your wrist',
+  how_to_use_upcoming_feature3: 'Support Community: Connect anonymously with others at similar stages',
+  how_to_use_upcoming_feature4: 'Behavior Reprogramming: Automatic detection of trigger patterns and alternative habits',
+  how_to_use_upcoming_feature5: 'Gamification: Build your smoke-free world with unlockable zones and invisible rewards',
+  how_to_use_upcoming_feature6: 'Privacy Mode: Discrete notifications and encrypted export for your records',
 };
 
 export default en;

@@ -178,6 +178,71 @@ const fr = {
   // Messages
   no_data: 'Aucune donnée disponible',
   loading: 'Chargement...',
+
+  // Error feedback
+  error_feedback_title: 'Oups ! Une erreur est survenue',
+  error_feedback_description: 'Nous sommes désolés ! Quelque chose s\'est mal passé. Aidez-nous en envoyant un rapport d\'erreur.',
+  error_feedback_details: 'Détails de l\'erreur',
+  error_feedback_email: 'Votre email',
+  error_feedback_email_placeholder: 'Entrez votre adresse email',
+  error_feedback_message: 'Que faisiez-vous ? (optionnel)',
+  error_feedback_message_placeholder: 'Décrivez ce qui s\'est passé...',
+  error_feedback_send: 'Envoyer le rapport d\'erreur',
+  error_feedback_cancel: 'Fermer',
+  error_feedback_success_title: 'Merci !',
+  error_feedback_success_message: 'Votre rapport d\'erreur a été envoyé. Nous l\'étudierons et le corrigerons bientôt.',
+  error_feedback_error_title: 'Échec de l\'envoi',
+  error_feedback_validation_error: 'Veuillez entrer une adresse email valide',
+
+  // How to use
+  how_to_use_title: 'Comment utiliser CigOff',
+  how_to_use_welcome: 'Découvrez comment utiliser CigOff pour suivre votre progression et arrêter de fumer.',
+  
+  how_to_use_section1_title: '📱 Suivez vos cigarettes quotidiennes',
+  how_to_use_section1_desc: 'Surveillez votre consommation quotidienne tout au long de la journée. Cela vous aide à comprendre vos habitudes et votre progression.',
+  how_to_use_section1_step1: 'Ouvrez l\'onglet Accueil et consultez votre compteur quotidien',
+  how_to_use_section1_step2: 'Utilisez le bouton + pour ajouter des cigarettes, ou - pour annuler',
+  how_to_use_section1_step3: 'Suivez séparément la consommation du matin, de l\'après-midi et du soir',
+  
+  how_to_use_section2_title: '🤔 Identifiez vos déclencheurs',
+  how_to_use_section2_desc: 'Comprendre pourquoi vous fumez est la première étape pour arrêter. Ajoutez des raisons pour chaque cigarette.',
+  how_to_use_section2_step1: 'Sélectionnez les raisons : Stress, Social, Ennui, Concentration, etc.',
+  how_to_use_section2_step2: 'Identifiez les habitudes - découvrez quand vous êtes le plus susceptible de fumer',
+  how_to_use_section2_step3: 'Utilisez ces données pour préparer de meilleures stratégies',
+  
+  how_to_use_section3_title: '💪 Ajoutez des stratégies anti-envie',
+  how_to_use_section3_desc: 'Construisez votre kit personnel pour combattre les envies. Ajoutez des stratégies qui fonctionnent pour vous.',
+  how_to_use_section3_step1: 'Choisissez parmi : Hydratation, Respiration, Mouvement, Collation, Distraction',
+  how_to_use_section3_step2: 'Ou créez vos propres stratégies personnalisées',
+  how_to_use_section3_step3: 'Utilisez-les chaque fois que vous ressentez une envie',
+  
+  how_to_use_section4_title: '📊 Créez votre plan de réduction',
+  how_to_use_section4_desc: 'Établissez un plan progressif pour réduire les cigarettes. Choisissez votre rythme et votre motivation.',
+  how_to_use_section4_step1: 'Choisissez un rythme de réduction : Lent (-1 tous les 5-7 jours), Modéré, ou Rapide (-1 par jour)',
+  how_to_use_section4_step2: 'Choisissez votre motivation principale : Économies, Famille, ou Santé',
+  how_to_use_section4_step3: 'Suivez vos objectifs quotidiens et célébrez chaque étape',
+  
+  how_to_use_section5_title: 'Conseils pour réussir',
+  how_to_use_section5_desc: 'Voici quelques conseils scientifiquement prouvés pour vous aider :',
+  how_to_use_section5_tip1: 'Soyez constant dans le suivi - cela augmente vos chances de réussite',
+  how_to_use_section5_tip2: 'Consultez votre onglet Vue d\'ensemble pour voir votre progression',
+  how_to_use_section5_tip3: 'Quand vous atteindrez 1 cigarette/jour, un mode spécial "Zéro cigarette" s\'active avec des défis',
+  
+  how_to_use_faq_title: 'Questions fréquemment posées',
+  how_to_use_faq_q1: 'Et si je fume plus que prévu ?',
+  how_to_use_faq_a1: 'Ne vous découragez pas ! Arrêter n\'est pas linéaire. Réinitialisez simplement votre compteur et continuez. Chaque tentative vous rapproche du succès.',
+  how_to_use_faq_q2: 'À quelle fréquence dois-je utiliser CigOff ?',
+  how_to_use_faq_a2: 'Suivez chaque cigarette que vous fumez pour les données les plus précises. L\'application fonctionne mieux si vous l\'utilisez régulièrement tout au long de la journée.',
+
+  // Upcoming features
+  how_to_use_upcoming_title: 'Bientôt - Futures mises à jour',
+  how_to_use_upcoming_desc: 'Nous améliorons constamment CigOff avec des fonctionnalités intelligentes basées sur la psychologie comportementale.',
+  how_to_use_upcoming_feature1: 'Coach Intelligent : Conseils personnalisés adaptés à votre profil unique',
+  how_to_use_upcoming_feature2: 'Intégration Apple Watch : Logging rapide et détection des envies sur votre poignet',
+  how_to_use_upcoming_feature3: 'Communauté de Soutien : Connectez-vous anonymement avec d\'autres au même stade',
+  how_to_use_upcoming_feature4: 'Reprogrammation des Habitudes : Détection automatique des déclencheurs et routines alternatives',
+  how_to_use_upcoming_feature5: 'Gamification : Construisez votre monde sans cigarette avec des zones déverrouillables',
+  how_to_use_upcoming_feature6: 'Mode Discret : Notifications discrètes et export chiffré de vos données',
 };
 
 export default fr;

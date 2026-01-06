@@ -142,6 +142,13 @@ export default function TabLayout() {
           />
         </>
       )}
+      <Tabs.Screen
+        key={`info-${language}`}
+        name="info"
+        options={{
+          title: 'ℹ️ ' + i18n.t('how_to_use_title'),
+        }}
+      />
     </Tabs>
   );
 }
