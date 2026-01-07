@@ -25,7 +25,7 @@ const HomeScreen: React.FC = () => {
           <TouchableOpacity
             style={[styles.button, styles.addButton]}
             onPress={() => {
-              addCigarette('afternoon', 'test', []);
+              addCigarette('afternoon');
             }}
           >
             <Text style={styles.buttonText}>+ Add</Text>
@@ -35,7 +35,7 @@ const HomeScreen: React.FC = () => {
             style={[styles.button, styles.removeButton]}
             onPress={() => {
               if (total > 0) {
-                removeCigarette(0);
+                removeCigarette('afternoon');
               }
             }}
           >
