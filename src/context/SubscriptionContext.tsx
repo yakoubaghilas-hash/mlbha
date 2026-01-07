@@ -24,11 +24,23 @@ export function SubscriptionProvider({ children }: { children: React.ReactNode }
 
   const initializeSubscription = async () => {
     try {
-      await subscriptionService.initialize();
-      const status = await subscriptionService.getSubscriptionStatus();
-      setSubscriptionStatus(status);
-    } catch (error) {
-      // Initialization error handled silently
+      try {
+        await subscriptionService.initialize();
+      } catch {
+        // Initialization may fail on certain devices, continue without it
+      }
+      
+      try {
+        const status = await subscriptionService.getSubscriptionStatus();
+        setSubscriptionStatus(status);
+      } catch {
+        // Use default status if fetch fails
+        setSubscriptionStatus({
+          isPremium: false,
+          expiryDate: null,
+          isTrialActive: false,
+        });
+      }
     } finally {
       setIsLoading(false);
     }

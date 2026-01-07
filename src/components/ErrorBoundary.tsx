@@ -13,6 +13,28 @@ interface ErrorBoundaryState {
 }
 
 export class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoundaryState> {
+  componentDidMount() {
+    // Set up global error handler
+    const originalError = console.error;
+    const self = this;
+    
+    // Override console.error to catch unhandled errors
+    (console.error as any) = function(...args: any[]) {
+      originalError.apply(console, args);
+      if (args[0] && typeof args[0] === 'object' && args[0].message) {
+        self.setState({
+          hasError: true,
+          error: args[0],
+          errorInfo: args[1]?.componentStack || 'Unhandled error',
+        });
+      }
+    };
+
+    return () => {
+      (console.error as any) = originalError;
+    };
+  }
+
   constructor(props: ErrorBoundaryProps) {
     super(props);
     this.state = {
