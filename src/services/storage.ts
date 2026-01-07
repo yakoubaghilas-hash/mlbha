@@ -40,7 +40,7 @@ export const saveDayData = async (dayData: DayData): Promise<void> => {
     }
     await AsyncStorage.setItem(CIGARETTES_KEY, JSON.stringify(data));
   } catch (error) {
-    console.error('Error saving day data:', error);
+    // Silently fail for storage - app can continue without persistence
   }
 };
 
@@ -51,7 +51,6 @@ export const getDayData = async (date: string): Promise<DayData> => {
     const dayData = data.find(d => d.date === date);
     return dayData || { date, morning: 0, afternoon: 0, evening: 0 };
   } catch (error) {
-    console.error('Error getting day data:', error);
     return { date, morning: 0, afternoon: 0, evening: 0 };
   }
 };

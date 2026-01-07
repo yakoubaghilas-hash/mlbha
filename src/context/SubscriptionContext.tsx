@@ -28,7 +28,7 @@ export function SubscriptionProvider({ children }: { children: React.ReactNode }
       const status = await subscriptionService.getSubscriptionStatus();
       setSubscriptionStatus(status);
     } catch (error) {
-      console.error('Error initializing subscription:', error);
+      // Initialization error handled silently
     } finally {
       setIsLoading(false);
     }
@@ -41,7 +41,6 @@ export function SubscriptionProvider({ children }: { children: React.ReactNode }
       const status = await subscriptionService.getSubscriptionStatus();
       setSubscriptionStatus(status);
     } catch (error) {
-      console.error('Error starting trial:', error);
       throw error;
     } finally {
       setIsLoading(false);
@@ -55,7 +54,6 @@ export function SubscriptionProvider({ children }: { children: React.ReactNode }
       const status = await subscriptionService.getSubscriptionStatus();
       setSubscriptionStatus(status);
     } catch (error) {
-      console.error('Error restoring purchases:', error);
       throw error;
     } finally {
       setIsLoading(false);

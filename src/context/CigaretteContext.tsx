@@ -50,14 +50,37 @@ export const CigaretteProvider: React.FC<{ children: React.ReactNode }> = ({ chi
   // Load today's data on mount
   useEffect(() => {
     const loadData = async () => {
-      const data = await getDayData(currentDate);
-      setTodayDataState(data);
-      const profileData = await getProfile();
-      setProfileState(profileData);
-      const challenges = await getSubscribedChallenges();
-      setSubscribedChallenges(challenges);
-      const lastTime = await getLastCigaretteTime();
-      setLastCigaretteTime(lastTime);
+      try {
+        const data = await getDayData(currentDate);
+        setTodayDataState(data);
+      } catch (error) {
+        // If loading fails, use default empty data
+        setTodayDataState({ date: currentDate, morning: 0, afternoon: 0, evening: 0 });
+      }
+      
+      try {
+        const profileData = await getProfile();
+        setProfileState(profileData);
+      } catch (error) {
+        // If loading fails, use default profile
+        setProfileState({ tags: [], strategies: [], workoutDates: [] });
+      }
+      
+      try {
+        const challenges = await getSubscribedChallenges();
+        setSubscribedChallenges(challenges);
+      } catch (error) {
+        // If loading fails, use empty array
+        setSubscribedChallenges([]);
+      }
+      
+      try {
+        const lastTime = await getLastCigaretteTime();
+        setLastCigaretteTime(lastTime);
+      } catch (error) {
+        // If loading fails, use null
+        setLastCigaretteTime(null);
+      }
     };
     loadData();
   }, [currentDate]);

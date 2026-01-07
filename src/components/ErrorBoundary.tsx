@@ -1,5 +1,5 @@
-import React, { ReactNode, useState } from 'react';
-import { View, Text, ScrollView, StyleSheet, TouchableOpacity, Alert } from 'react-native';
+import React, { ReactNode } from 'react';
+import { View, Text, ScrollView, StyleSheet, TouchableOpacity } from 'react-native';
 import { ErrorFeedbackModal } from './ErrorFeedbackModal';
 
 interface ErrorBoundaryProps {
@@ -27,7 +27,6 @@ export class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoun
   }
 
   componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
-    console.error('Error caught by boundary:', error, errorInfo);
     this.setState({
       error,
       errorInfo: errorInfo.componentStack || null,

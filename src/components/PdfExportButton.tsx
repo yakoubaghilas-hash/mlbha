@@ -43,7 +43,6 @@ const PdfExportButton: React.FC<PdfExportButtonProps> = ({ data, language }) => 
         setReportVisible(true);
       }
     } catch (error) {
-      console.error('Error generating report:', error);
       Alert.alert('Error', 'Could not generate report: ' + String(error));
     }
   };
