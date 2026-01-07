@@ -1,9 +1,10 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 
 interface SubscriptionStatus {
   isPremium: boolean;
   expiryDate: string | null;
   isTrialActive: boolean;
+  error?: string;
 }
 
 interface SubscriptionContextType {
@@ -11,6 +12,7 @@ interface SubscriptionContextType {
   startTrial: () => Promise<void>;
   restorePurchases: () => Promise<void>;
   isLoading: boolean;
+  hasPaymentModuleError: boolean;
 }
 
 const SubscriptionContext = createContext<SubscriptionContextType | undefined>(undefined);
@@ -21,31 +23,65 @@ const DEFAULT_STATUS: SubscriptionStatus = {
   isTrialActive: false,
 };
 
-export function SubscriptionProvider({ children }: { children: React.ReactNode }) {
+export function SubscriptionProvider({ children }: { children: ReactNode }) {
   const [subscriptionStatus, setSubscriptionStatus] = useState<SubscriptionStatus>(DEFAULT_STATUS);
   const [isLoading, setIsLoading] = useState(false);
+  const [hasPaymentModuleError, setHasPaymentModuleError] = useState(false);
 
   useEffect(() => {
-    // Don't block app startup - just set default status
-    setSubscriptionStatus(DEFAULT_STATUS);
+    // Safe initialization - wrap in try-catch to prevent native crashes
+    try {
+      setSubscriptionStatus(DEFAULT_STATUS);
+    } catch (error) {
+      console.error('[SubscriptionProvider] Init error:', error);
+      setHasPaymentModuleError(true);
+    }
   }, []);
 
   const startTrial = async () => {
-    // Mock implementation
-    setSubscriptionStatus({
-      isPremium: true,
-      expiryDate: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString(),
-      isTrialActive: true,
-    });
+    try {
+      setIsLoading(true);
+      // Mock implementation - no native IAP calls
+      setSubscriptionStatus({
+        isPremium: true,
+        expiryDate: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString(),
+        isTrialActive: true,
+      });
+    } catch (error) {
+      console.error('[startTrial] Error:', error);
+      setSubscriptionStatus({
+        ...DEFAULT_STATUS,
+        error: 'Failed to start trial',
+      });
+      setHasPaymentModuleError(true);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const restorePurchases = async () => {
-    // Mock implementation
-    setSubscriptionStatus(DEFAULT_STATUS);
+    try {
+      setIsLoading(true);
+      // Mock implementation - no native IAP calls
+      setSubscriptionStatus(DEFAULT_STATUS);
+    } catch (error) {
+      console.error('[restorePurchases] Error:', error);
+      setHasPaymentModuleError(true);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const value: SubscriptionContextType = {
+    subscriptionStatus,
+    startTrial,
+    restorePurchases,
+    isLoading,
+    hasPaymentModuleError,
   };
 
   return (
-    <SubscriptionContext.Provider value={{ subscriptionStatus, startTrial, restorePurchases, isLoading }}>
+    <SubscriptionContext.Provider value={value}>
       {children}
     </SubscriptionContext.Provider>
   );

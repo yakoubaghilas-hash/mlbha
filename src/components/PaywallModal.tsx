@@ -13,12 +13,20 @@ import { useSubscription } from '@/src/context/SubscriptionContext';
 import { useLanguage } from '@/src/context/LanguageContext';
 import i18n from '@/src/i18n';
 
-// Safe wrapper component
+// Safe wrapper - catches any rendering or native errors
 export function PaywallModal() {
+  const { hasPaymentModuleError } = useSubscription();
+  
+  // Don't render if payment module has errors
+  if (hasPaymentModuleError) {
+    console.warn('[PaywallModal] Payment module error detected, hiding paywall');
+    return null;
+  }
+
   try {
     return <PaywallModalContent />;
   } catch (error) {
-    console.error('[PaywallModal] Error rendering:', error);
+    console.error('[PaywallModal] Render error:', error);
     return null;
   }
 }
@@ -27,6 +35,11 @@ function PaywallModalContent() {
   const { subscriptionStatus, startTrial, isLoading } = useSubscription();
   const { language } = useLanguage();
   const [agreed, setAgreed] = useState(false);
+
+  // Don't show if already premium
+  if (subscriptionStatus.isPremium) {
+    return null;
+  }
 
   if (subscriptionStatus.isPremium) {
     return null;

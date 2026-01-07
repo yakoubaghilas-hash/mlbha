@@ -204,8 +204,7 @@ const HomeScreen: React.FC = () => {
 
   return (
     <SafeAreaView style={styles.container}>
-      {/* DISABLED: Native IAP module causes NSException crash on iOS */}
-      {/* {!subscriptionStatus.isPremium && <PaywallModal />} */}
+      {!subscriptionStatus.isPremium && <PaywallModal />}
       
       {/* Alert Message */}
       {alertMessage && (
