@@ -13,34 +13,34 @@ interface ErrorBoundaryState {
 }
 
 export class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoundaryState> {
-  componentDidMount() {
-    // Set up global error handler
-    const originalError = console.error;
-    const self = this;
-    
-    // Override console.error to catch unhandled errors
-    (console.error as any) = function(...args: any[]) {
-      originalError.apply(console, args);
-      if (args[0] && typeof args[0] === 'object' && args[0].message) {
-        self.setState({
-          hasError: true,
-          error: args[0],
-          errorInfo: args[1]?.componentStack || 'Unhandled error',
-        });
-      }
-    };
-
-    return () => {
-      (console.error as any) = originalError;
-    };
-  }
-
   constructor(props: ErrorBoundaryProps) {
     super(props);
     this.state = {
       hasError: false,
       error: null,
       errorInfo: null,
+    };
+
+    // Set up global error handler that captures unhandled errors
+    if (!global.ErrorUtils) {
+      global.ErrorUtils = {};
+    }
+
+    const originalHandler = global.ErrorUtils.setErrorHandler;
+    const self = this;
+
+    global.ErrorUtils.setErrorHandler = (fn: any) => {
+      return originalHandler?.((...args: any[]) => {
+        try {
+          fn(...args);
+        } catch (error) {
+          self.setState({
+            hasError: true,
+            error: error as Error,
+            errorInfo: 'Unhandled global error',
+          });
+        }
+      });
     };
   }
 
@@ -56,6 +56,7 @@ export class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoun
   }
 
   handleCloseFeedback = () => {
+    // Try to recover by clearing the error state
     this.setState({
       hasError: false,
       error: null,
@@ -66,29 +67,23 @@ export class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoun
   render() {
     if (this.state.hasError && this.state.error) {
       return (
-        <>
-          <ErrorFeedbackModal
-            visible={true}
-            error={this.state.error}
-            errorInfo={this.state.errorInfo}
-            onClose={this.handleCloseFeedback}
-          />
-          <View style={styles.fallbackContainer}>
-            <ScrollView contentContainerStyle={styles.scrollContent}>
-              <Text style={styles.title}>Oops! Something went wrong</Text>
-              <Text style={styles.errorMessage}>{this.state.error.toString()}</Text>
-              {this.state.errorInfo && (
-                <Text style={styles.stackTrace}>{this.state.errorInfo}</Text>
-              )}
-            </ScrollView>
-            <TouchableOpacity
-              style={styles.button}
-              onPress={this.handleCloseFeedback}
-            >
-              <Text style={styles.buttonText}>Dismiss</Text>
-            </TouchableOpacity>
-          </View>
-        </>
+        <View style={styles.fallbackContainer}>
+          <ScrollView contentContainerStyle={styles.scrollContent}>
+            <Text style={styles.title}>Application Error</Text>
+            <Text style={styles.errorMessage}>
+              An unexpected error occurred. The app will continue working.
+            </Text>
+            <Text style={styles.details}>
+              {this.state.error?.toString() || 'Unknown error'}
+            </Text>
+          </ScrollView>
+          <TouchableOpacity
+            style={styles.button}
+            onPress={this.handleCloseFeedback}
+          >
+            <Text style={styles.buttonText}>Continue</Text>
+          </TouchableOpacity>
+        </View>
       );
     }
 
@@ -118,7 +113,7 @@ const styles = StyleSheet.create({
     marginBottom: 16,
     lineHeight: 24,
   },
-  stackTrace: {
+  details: {
     fontSize: 12,
     color: '#666',
     backgroundColor: '#f5f5f5',

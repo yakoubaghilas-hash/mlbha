@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState } from 'react';
 import i18n from '@/src/i18n';
+import { safeSync } from '@/src/utils/safeInitialization';
 
 interface LanguageContextType {
   language: string;
@@ -10,15 +11,27 @@ interface LanguageContextType {
 const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
 
 export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [language, setLanguage] = useState<string>(i18n.locale);
+  const [language, setLanguage] = useState<string>(
+    safeSync(
+      () => i18n.locale,
+      'en'
+    )
+  );
 
   const changeLanguage = (lang: string) => {
-    i18n.locale = lang;
-    setLanguage(lang);
+    try {
+      i18n.locale = lang;
+      setLanguage(lang);
+    } catch (error) {
+      // Fail silently, keep current language
+    }
   };
 
   const t = (key: string) => {
-    return i18n.t(key);
+    return safeSync(
+      () => i18n.t(key),
+      key
+    );
   };
 
   return (

@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { getDayData, saveDayData, DayData, UserProfile, getProfile, saveProfile, getSubscribedChallenges, subscribeToChallenge, unsubscribeFromChallenge, updateChallengeStatus, SubscribedChallenge, getLastCigaretteTime, saveLastCigaretteTime } from '../services/storage';
+import { safeAsync } from '../utils/safeInitialization';
 
 interface CigaretteContextType {
   // Current day data
@@ -29,60 +30,76 @@ interface CigaretteContextType {
 
 const CigaretteContext = createContext<CigaretteContextType | undefined>(undefined);
 
+// Default safe values for initial state
+const DEFAULT_TODAY_DATA: DayData = {
+  date: new Date().toISOString().split('T')[0],
+  morning: 0,
+  afternoon: 0,
+  evening: 0,
+};
+
+const DEFAULT_PROFILE: UserProfile = {
+  tags: [],
+  strategies: [],
+  workoutDates: [],
+};
+
 export const CigaretteProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [currentDate, setCurrentDate] = useState<string>(
     new Date().toISOString().split('T')[0]
   );
-  const [todayData, setTodayDataState] = useState<DayData>({
-    date: currentDate,
-    morning: 0,
-    afternoon: 0,
-    evening: 0,
-  });
-  const [profile, setProfileState] = useState<UserProfile>({
-    tags: [],
-    strategies: [],
-    workoutDates: [],
-  });
+  const [todayData, setTodayDataState] = useState<DayData>(DEFAULT_TODAY_DATA);
+  const [profile, setProfileState] = useState<UserProfile>(DEFAULT_PROFILE);
   const [subscribedChallenges, setSubscribedChallenges] = useState<SubscribedChallenge[]>([]);
   const [lastCigaretteTime, setLastCigaretteTime] = useState<number | null>(null);
+  const [initialized, setInitialized] = useState(false);
 
-  // Load today's data on mount
+  // Load today's data on mount - with robust error handling
   useEffect(() => {
+    let isMounted = true;
+
     const loadData = async () => {
       try {
-        const data = await getDayData(currentDate);
-        setTodayDataState(data);
+        // Load each piece of data independently with fallbacks
+        const data = await safeAsync(
+          () => getDayData(currentDate),
+          DEFAULT_TODAY_DATA
+        );
+        if (isMounted) setTodayDataState(data);
+
+        const profileData = await safeAsync(
+          () => getProfile(),
+          DEFAULT_PROFILE
+        );
+        if (isMounted) setProfileState(profileData);
+
+        const challenges = await safeAsync(
+          () => getSubscribedChallenges(),
+          []
+        );
+        if (isMounted) setSubscribedChallenges(challenges);
+
+        const lastTime = await safeAsync(
+          () => getLastCigaretteTime(),
+          null
+        );
+        if (isMounted) setLastCigaretteTime(lastTime);
+
+        if (isMounted) setInitialized(true);
       } catch (error) {
-        // If loading fails, use default empty data
-        setTodayDataState({ date: currentDate, morning: 0, afternoon: 0, evening: 0 });
-      }
-      
-      try {
-        const profileData = await getProfile();
-        setProfileState(profileData);
-      } catch (error) {
-        // If loading fails, use default profile
-        setProfileState({ tags: [], strategies: [], workoutDates: [] });
-      }
-      
-      try {
-        const challenges = await getSubscribedChallenges();
-        setSubscribedChallenges(challenges);
-      } catch (error) {
-        // If loading fails, use empty array
-        setSubscribedChallenges([]);
-      }
-      
-      try {
-        const lastTime = await getLastCigaretteTime();
-        setLastCigaretteTime(lastTime);
-      } catch (error) {
-        // If loading fails, use null
-        setLastCigaretteTime(null);
+        // If everything fails, still initialize with defaults
+        if (isMounted) {
+          setInitialized(true);
+        }
       }
     };
+
+    // Start loading but don't block rendering
     loadData();
+
+    return () => {
+      isMounted = false;
+    };
   }, [currentDate]);
 
   // Save whenever data changes
