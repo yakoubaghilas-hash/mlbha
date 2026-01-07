@@ -13,7 +13,17 @@ import { useSubscription } from '@/src/context/SubscriptionContext';
 import { useLanguage } from '@/src/context/LanguageContext';
 import i18n from '@/src/i18n';
 
+// Safe wrapper component
 export function PaywallModal() {
+  try {
+    return <PaywallModalContent />;
+  } catch (error) {
+    console.error('[PaywallModal] Error rendering:', error);
+    return null;
+  }
+}
+
+function PaywallModalContent() {
   const { subscriptionStatus, startTrial, isLoading } = useSubscription();
   const { language } = useLanguage();
   const [agreed, setAgreed] = useState(false);
