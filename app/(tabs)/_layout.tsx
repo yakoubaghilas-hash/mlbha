@@ -114,7 +114,39 @@ export default function TabLayout() {
         key={`home-${language}`}
         name="index"
         options={{
-          title: 'Home',
+          title: i18n.t('home'),
+        }}
+      />
+      {subscriptionStatus.isPremium && (
+        <>
+          <Tabs.Screen
+            key={`overview-${language}`}
+            name="overview"
+            options={{
+              title: i18n.t('overview'),
+            }}
+          />
+          <Tabs.Screen
+            key={`challenge-${language}`}
+            name="challenge"
+            options={{
+              title: i18n.t('challenges'),
+            }}
+          />
+          <Tabs.Screen
+            key={`reduction-plan-${language}`}
+            name="reduction-plan"
+            options={{
+              title: i18n.t('reduction_plan') || 'Plan',
+            }}
+          />
+        </>
+      )}
+      <Tabs.Screen
+        key={`info-${language}`}
+        name="info"
+        options={{
+          title: 'ℹ️ ' + i18n.t('how_to_use_title'),
         }}
       />
     </Tabs>
