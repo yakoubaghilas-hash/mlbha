@@ -147,19 +147,30 @@ const OverviewScreen: React.FC = () => {
 
   useEffect(() => {
     const loadData = async () => {
-      const allData = await getAllData();
-      setData(allData);
+      try {
+        const allData = await getAllData().catch(() => []);
+        setData(allData);
 
-      if (viewType === 'weekly') {
-        const weekData = await getWeekData(allData);
-        setChartData(getChartData(weekData));
-      } else if (viewType === 'monthly') {
-        const monthData = await getMonthData(allData);
-        setChartData(getChartData(monthData));
-      } else {
-        // Yearly data - group by month
-        const yearlyData = getYearlyData(allData);
-        setChartData(yearlyData);
+        try {
+          if (viewType === 'weekly') {
+            const weekData = await getWeekData(allData).catch(() => []);
+            setChartData(getChartData(weekData));
+          } else if (viewType === 'monthly') {
+            const monthData = await getMonthData(allData).catch(() => []);
+            setChartData(getChartData(monthData));
+          } else {
+            // Yearly data - group by month
+            const yearlyData = getYearlyData(allData);
+            setChartData(yearlyData);
+          }
+        } catch (error) {
+          // Ignore chart data loading errors
+          console.error('Error loading chart data:', error);
+        }
+      } catch (error) {
+        // Silently ignore data loading errors
+        console.error('Error loading overview data:', error);
+        setData([]);
       }
     };
 
