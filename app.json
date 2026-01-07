@@ -1,17 +1,17 @@
 {
   "expo": {
-    "name": "CigOff Pro",
+    "name": "CigOff",
     "slug": "LostBoysHealthyAgain",
-    "version": "1.0.0",
+    "version": "1.0.13",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
-    "scheme": "cigoffpro",
+    "scheme": "cigoff",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": false,
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.yakoubaghilas.cigoffpro",
-      "buildNumber": "1",
+      "bundleIdentifier": "com.yakoubaghilas.cigoff",
+      "buildNumber": "4",
       "associatedDomains": [],
       "infoPlist": {
         "ITSAppUsesNonExemptEncryption": false,
