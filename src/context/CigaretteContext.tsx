@@ -1,37 +1,26 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { getDayData, saveDayData, DayData, UserProfile, getProfile, saveProfile, getSubscribedChallenges, subscribeToChallenge, unsubscribeFromChallenge, updateChallengeStatus, SubscribedChallenge, getLastCigaretteTime, saveLastCigaretteTime } from '../services/storage';
-import { safeAsync } from '../utils/safeInitialization';
 
 interface CigaretteContextType {
-  // Current day data
   currentDate: string;
   todayData: DayData;
-  lastCigaretteTime: number | null; // Timestamp of last cigarette
-  totalToday: number; // Total cigarettes today (morning + afternoon + evening)
-  
-  // Actions
+  lastCigaretteTime: number | null;
+  totalToday: number;
   addCigarette: (period: 'morning' | 'afternoon' | 'evening') => { diffMins: number; diffHours: number; diffDays: number } | null;
   removeCigarette: (period: 'morning' | 'afternoon' | 'evening') => void;
   setTodayData: (data: DayData) => void;
-  
-  // Profile
   profile: UserProfile;
   updateProfile: (profile: UserProfile) => void;
-  
-  // Challenges
   subscribedChallenges: SubscribedChallenge[];
   subscribeToChallenge: (challengeId: string) => Promise<void>;
   unsubscribeFromChallenge: (challengeId: string) => Promise<void>;
   updateChallengeStatus: (challengeId: string, status: 'active' | 'won' | 'lost') => Promise<void>;
-  
-  // Statistics
   getProfileLevel: () => 'Bad' | 'Medium' | 'Good' | 'Ready for Perfection';
 }
 
 const CigaretteContext = createContext<CigaretteContextType | undefined>(undefined);
 
-// Default safe values for initial state
-const DEFAULT_TODAY_DATA: DayData = {
+const DEFAULT_TODAY: DayData = {
   date: new Date().toISOString().split('T')[0],
   morning: 0,
   afternoon: 0,
@@ -48,53 +37,46 @@ export const CigaretteProvider: React.FC<{ children: React.ReactNode }> = ({ chi
   const [currentDate, setCurrentDate] = useState<string>(
     new Date().toISOString().split('T')[0]
   );
-  const [todayData, setTodayDataState] = useState<DayData>(DEFAULT_TODAY_DATA);
+  const [todayData, setTodayDataState] = useState<DayData>(DEFAULT_TODAY);
   const [profile, setProfileState] = useState<UserProfile>(DEFAULT_PROFILE);
-  const [subscribedChallenges, setSubscribedChallenges] = useState<SubscribedChallenge[]>([]);
+  const [subscribedChallenges, setSubscribedChallengesState] = useState<SubscribedChallenge[]>([]);
   const [lastCigaretteTime, setLastCigaretteTime] = useState<number | null>(null);
-  const [initialized, setInitialized] = useState(false);
 
-  // Load today's data on mount - with robust error handling
+  // Load data in background - don't block startup
   useEffect(() => {
     let isMounted = true;
 
     const loadData = async () => {
       try {
-        // Load each piece of data independently with fallbacks
-        const data = await safeAsync(
-          () => getDayData(currentDate),
-          DEFAULT_TODAY_DATA
-        );
-        if (isMounted) setTodayDataState(data);
+        // Try each operation independently
+        const dayData = await getDayData(currentDate).catch(() => DEFAULT_TODAY);
+        if (isMounted) setTodayDataState(dayData);
+      } catch {
+        if (isMounted) setTodayDataState(DEFAULT_TODAY);
+      }
 
-        const profileData = await safeAsync(
-          () => getProfile(),
-          DEFAULT_PROFILE
-        );
+      try {
+        const profileData = await getProfile().catch(() => DEFAULT_PROFILE);
         if (isMounted) setProfileState(profileData);
+      } catch {
+        if (isMounted) setProfileState(DEFAULT_PROFILE);
+      }
 
-        const challenges = await safeAsync(
-          () => getSubscribedChallenges(),
-          []
-        );
-        if (isMounted) setSubscribedChallenges(challenges);
+      try {
+        const challenges = await getSubscribedChallenges().catch(() => []);
+        if (isMounted) setSubscribedChallengesState(challenges);
+      } catch {
+        if (isMounted) setSubscribedChallengesState([]);
+      }
 
-        const lastTime = await safeAsync(
-          () => getLastCigaretteTime(),
-          null
-        );
+      try {
+        const lastTime = await getLastCigaretteTime().catch(() => null);
         if (isMounted) setLastCigaretteTime(lastTime);
-
-        if (isMounted) setInitialized(true);
-      } catch (error) {
-        // If everything fails, still initialize with defaults
-        if (isMounted) {
-          setInitialized(true);
-        }
+      } catch {
+        if (isMounted) setLastCigaretteTime(null);
       }
     };
 
-    // Start loading but don't block rendering
     loadData();
 
     return () => {

@@ -1,21 +1,48 @@
-import { getLocales } from 'expo-localization';
-import en from './en';
-import fr from './fr';
-import es from './es';
-
-const translations: Record<string, any> = {
-  en, fr, es,
+// Minimal i18n implementation with zero error risk
+let translations: Record<string, any> = {
+  en: require('./en').default || {},
+  fr: require('./fr').default || {},
+  es: require('./es').default || {},
 };
 
-// Simple i18n implementation
+// Safe locale detection
+let currentLocale = 'en';
+try {
+  // Only try to get locales if available
+  const { getLocales } = require('expo-localization');
+  if (getLocales && typeof getLocales === 'function') {
+    const locales = getLocales();
+    if (Array.isArray(locales) && locales.length > 0) {
+      const detected = locales[0]?.languageCode;
+      if (detected && ['en', 'fr', 'es'].includes(detected)) {
+        currentLocale = detected;
+      }
+    }
+  }
+} catch (error) {
+  // Silently fail - use default English
+  currentLocale = 'en';
+}
+
 const i18n = {
   translations,
   defaultLocale: 'en',
-  locale: getLocales()[0]?.languageCode || 'en',
+  locale: currentLocale,
   enableFallback: true,
   t: function(key: string): string {
-    const currentLocale = this.translations[this.locale] || this.translations.en;
-    return currentLocale[key] || this.translations.en[key] || key;
+    try {
+      const current = this.translations[this.locale];
+      if (current && current[key]) {
+        return current[key];
+      }
+      const fallback = this.translations.en;
+      if (fallback && fallback[key]) {
+        return fallback[key];
+      }
+      return key;
+    } catch (error) {
+      return key;
+    }
   },
 };
 

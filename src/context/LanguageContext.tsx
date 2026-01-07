@@ -1,6 +1,5 @@
 import React, { createContext, useContext, useState } from 'react';
 import i18n from '@/src/i18n';
-import { safeSync } from '@/src/utils/safeInitialization';
 
 interface LanguageContextType {
   language: string;
@@ -11,27 +10,33 @@ interface LanguageContextType {
 const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
 
 export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [language, setLanguage] = useState<string>(
-    safeSync(
-      () => i18n.locale,
-      'en'
-    )
-  );
+  // Never let initialization fail
+  let initialLang = 'en';
+  try {
+    initialLang = i18n.locale || 'en';
+  } catch {
+    initialLang = 'en';
+  }
+
+  const [language, setLanguage] = useState<string>(initialLang);
 
   const changeLanguage = (lang: string) => {
     try {
-      i18n.locale = lang;
-      setLanguage(lang);
-    } catch (error) {
-      // Fail silently, keep current language
+      if (['en', 'fr', 'es'].includes(lang)) {
+        i18n.locale = lang;
+        setLanguage(lang);
+      }
+    } catch {
+      // Silently ignore
     }
   };
 
   const t = (key: string) => {
-    return safeSync(
-      () => i18n.t(key),
-      key
-    );
+    try {
+      return i18n.t(key) || key;
+    } catch {
+      return key;
+    }
   };
 
   return (
@@ -40,6 +45,14 @@ export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     </LanguageContext.Provider>
   );
 };
+
+export function useLanguage() {
+  const context = useContext(LanguageContext);
+  if (!context) {
+    throw new Error('useLanguage must be used within LanguageProvider');
+  }
+  return context;
+}
 
 export const useLanguage = () => {
   const context = useContext(LanguageContext);

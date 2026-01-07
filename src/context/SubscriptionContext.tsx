@@ -1,6 +1,10 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import subscriptionService, { SubscriptionStatus } from '@/src/services/subscriptionService';
-import { safeAsync } from '@/src/utils/safeInitialization';
+
+interface SubscriptionStatus {
+  isPremium: boolean;
+  expiryDate: string | null;
+  isTrialActive: boolean;
+}
 
 interface SubscriptionContextType {
   subscriptionStatus: SubscriptionStatus;
@@ -11,53 +15,49 @@ interface SubscriptionContextType {
 
 const SubscriptionContext = createContext<SubscriptionContextType | undefined>(undefined);
 
-const DEFAULT_SUBSCRIPTION_STATUS: SubscriptionStatus = {
+const DEFAULT_STATUS: SubscriptionStatus = {
   isPremium: false,
   expiryDate: null,
   isTrialActive: false,
 };
 
 export function SubscriptionProvider({ children }: { children: React.ReactNode }) {
-  const [subscriptionStatus, setSubscriptionStatus] = useState<SubscriptionStatus>(
-    DEFAULT_SUBSCRIPTION_STATUS
-  );
+  const [subscriptionStatus, setSubscriptionStatus] = useState<SubscriptionStatus>(DEFAULT_STATUS);
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    let isMounted = true;
-
-    const initializeSubscription = async () => {
-      try {
-        // Try to initialize subscription service (non-blocking)
-        await safeAsync(
-          () => subscriptionService.initialize(),
-          undefined
-        );
-
-        // Try to get subscription status
-        const status = await safeAsync(
-          () => subscriptionService.getSubscriptionStatus(),
-          DEFAULT_SUBSCRIPTION_STATUS
-        );
-
-        if (isMounted) {
-          setSubscriptionStatus(status);
-        }
-      } catch (error) {
-        // Use default if everything fails
-        if (isMounted) {
-          setSubscriptionStatus(DEFAULT_SUBSCRIPTION_STATUS);
-        }
-      }
-    };
-
-    // Initialize in background without blocking
-    initializeSubscription();
-
-    return () => {
-      isMounted = false;
-    };
+    // Don't block app startup - just set default status
+    setSubscriptionStatus(DEFAULT_STATUS);
   }, []);
+
+  const startTrial = async () => {
+    // Mock implementation
+    setSubscriptionStatus({
+      isPremium: true,
+      expiryDate: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString(),
+      isTrialActive: true,
+    });
+  };
+
+  const restorePurchases = async () => {
+    // Mock implementation
+    setSubscriptionStatus(DEFAULT_STATUS);
+  };
+
+  return (
+    <SubscriptionContext.Provider value={{ subscriptionStatus, startTrial, restorePurchases, isLoading }}>
+      {children}
+    </SubscriptionContext.Provider>
+  );
+}
+
+export function useSubscription() {
+  const context = useContext(SubscriptionContext);
+  if (!context) {
+    throw new Error('useSubscription must be used within SubscriptionProvider');
+  }
+  return context;
+}
 
   const startTrial = async () => {
     try {
