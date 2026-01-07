@@ -75,24 +75,3 @@ const styles = StyleSheet.create({
     fontWeight: '600',
   },
 });
-    color: '#666',
-    backgroundColor: '#f5f5f5',
-    padding: 12,
-    borderRadius: 8,
-    fontFamily: 'Courier New',
-    lineHeight: 18,
-  },
-  button: {
-    backgroundColor: '#0078D4',
-    paddingVertical: 12,
-    paddingHorizontal: 24,
-    borderRadius: 8,
-    alignItems: 'center',
-    marginTop: 20,
-  },
-  buttonText: {
-    color: '#ffffff',
-    fontSize: 16,
-    fontWeight: 'bold',
-  },
-});

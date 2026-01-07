@@ -137,19 +137,19 @@ export const CigaretteProvider: React.FC<{ children: React.ReactNode }> = ({ chi
   const handleSubscribeToChallenge = async (challengeId: string) => {
     await subscribeToChallenge(challengeId);
     const challenges = await getSubscribedChallenges();
-    setSubscribedChallenges(challenges);
+    setSubscribedChallengesState(challenges);
   };
 
   const handleUnsubscribeFromChallenge = async (challengeId: string) => {
     await unsubscribeFromChallenge(challengeId);
     const challenges = await getSubscribedChallenges();
-    setSubscribedChallenges(challenges);
+    setSubscribedChallengesState(challenges);
   };
 
   const handleUpdateChallengeStatus = async (challengeId: string, status: 'active' | 'won' | 'lost') => {
     await updateChallengeStatus(challengeId, status);
     const challenges = await getSubscribedChallenges();
-    setSubscribedChallenges(challenges);
+    setSubscribedChallengesState(challenges);
   };
 
   const getProfileLevel = (): 'Bad' | 'Medium' | 'Good' | 'Ready for Perfection' => {
