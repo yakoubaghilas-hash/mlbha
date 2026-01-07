@@ -204,7 +204,7 @@ const HomeScreen: React.FC = () => {
 
   return (
     <SafeAreaView style={styles.container}>
-      {!subscriptionStatus.isPremium && <PaywallModal />}
+      {/* TEMPORARILY DISABLED: !subscriptionStatus.isPremium && <PaywallModal /> */}
       
       {/* Alert Message */}
       {alertMessage && (
