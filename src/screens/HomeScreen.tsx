@@ -32,17 +32,26 @@ const HomeScreen: React.FC = () => {
   // Load all data for challenge checking
   useEffect(() => {
     const loadData = async () => {
-      const data = await getAllData();
-      setAllData(data);
-      
-      // Check and update challenge statuses
-      for (const challenge of subscribedChallenges) {
-        if (challenge.status === 'active') {
-          const newStatus = checkChallengeStatus(challenge.id, todayData, data);
-          if (newStatus !== 'active') {
-            await updateChallengeStatus(challenge.id, newStatus);
+      try {
+        const data = await getAllData().catch(() => []);
+        setAllData(data);
+        
+        // Check and update challenge statuses
+        for (const challenge of subscribedChallenges) {
+          if (challenge.status === 'active') {
+            const newStatus = checkChallengeStatus(challenge.id, todayData, data);
+            if (newStatus !== 'active') {
+              try {
+                await updateChallengeStatus(challenge.id, newStatus);
+              } catch {
+                // Ignore challenge update errors
+              }
+            }
           }
         }
+      } catch (error) {
+        // Silently ignore data loading errors
+        console.error('Error loading challenge data:', error);
       }
     };
     loadData();
